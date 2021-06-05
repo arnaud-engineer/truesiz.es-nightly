@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<!-- ENCODAGE -->
+			<meta charset="utf-8" />
+		<!-- PAGE INFO -->
+			<title>truesiz.es</title>
+		<!-- RESPONSIVENESS -->
+			<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+		<!-- FAVICON (https://www.favicon-generator.org/) -->
+			<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+			<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+			<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+			<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+			<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+			<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+			<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+			<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+			<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+			<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+			<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+			<link rel="manifest" href="/manifest.json">
+			<meta name="msapplication-TileColor" content="#ffffff">
+			<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+			<meta name="theme-color" content="#ffffff">
+		<!-- CSS -->
+			<link rel="stylesheet" href="style.css" />
+			<script src="lib/device-detection/data.js"></script>
+			<script src="lib/device-detection/main.js"></script>
+			<script src="script.js"></script>
+	</head>
+
+	<body>
+		<div id="background">
+			<canvas id="frame-1" width="150" height="150">Your browser does not support the canvas element.</canvas>
+			<canvas id="frame-2" width="150" height="150">Your browser does not support the canvas element.</canvas>
+			<canvas id="frame-3" width="150" height="150">Your browser does not support the canvas element.</canvas>
+			<canvas id="frame-4" width="150" height="150">Your browser does not support the canvas element.</canvas>
+		</div>
+
+		<header>
+			<div id="title">
+				<h1>truesiz.es</h1>
+				<h2>size does matter</h2>
+			</div>
+			<div id="credits">
+				<h1>by <a href="http://arnaud.cool"><img src="rsrc/img/arnaud-cool-logo.svg" alt="arnaud.cool logo"/> arnaud.cool</a></h1>
+				<p><a href="http://arnaud.cool">buy me a coffee</a></p>
+				<p>or <a href="http://arnaud.engineer">hire me</a></p>
+			</div>
+		</header>
+
+		<main>
+			<div id="square">
+				<div id="instructions">
+					<noscript>JavaScript is currently disabled on your browser, but truesiz.es can't works without it : <a href="https://www.enable-javascript.com">See how to enable it</a></noscript>
+					<h1></h1>
+				</div>
+				<div id="calibrationTools">
+					<div>
+						<h1>select a screen size</h1>
+						<p id="screenSizeButtons"></p>
+					</div>
+					<div>
+						<h1>or calibrate with an object</h1>
+						<select id="calibrationObjectsList" onchange="changeCalibrationObject();"></select>
+						<p>fit the frame with the object by scrolling (or use the - / + buttons)</p>
+					</div>
+				</div>
+
+			</div>
+		</main>
+
+		<footer>
+			<div id="device-info">
+				<div>model : <span id="deviceName"></span></div>
+				<div>screen size : <span id="deviceScreenSize"></span></div>
+				<div>resolution : <span id="deviceResolution"></span></div>
+				<div id="calibrationBox">
+					<div id="calibrationIcon"><img id="calibrationIconImg"/></div>
+					<div id="calibrationStatus">app failure</div>
+					<div id="calibrationButtons">
+						<button id="confirm-calibration-button" onclick="confirmCalibration();">confirm</button>
+						<button id="calibration-button" onclick="calibrationModeOn();">manual calibration</button>
+						<button id="reset-button" onclick="resetApp();">back to self-calibration</button>
+					</div>
+				</div>
+			</div>
+
+			<div id="input-form">
+				<form>
+					<select name="unit" id="sizeUnit" onchange="changeSizeUnit(this);reloadSquare();">
+						<option value="cm">cm</option>
+						<option value="inches">inches</option>
+					</select>
+					<div class="full-input"><label>width</label><input id="xVal" onkeyup="changeX(this);" type="number" required name="x" min="0" step=".1" autocomplete="off" placeholder="10.0"></div>
+					<div class="full-input"><label>height</label><input id="yVal" onkeyup="changeY(this);" type="number" required name="y" min="0" step=".1" autocomplete="off" placeholder="10.0"></div>
+				</form>
+			</div>
+			<div id="calibration-zoom">
+				<button onmousedown="changeResolutionOnButton('+');">+</button>
+				<button onmousedown="changeResolutionOnButton('-');">-</button>
+			</div>
+		</footer>
+
+	</body>
+</html>
