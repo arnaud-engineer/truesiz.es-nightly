@@ -376,6 +376,14 @@ form input
 		background-color: transparent;
 	}
 
+		/* Webkit fix to prevent arrows with input number : does not work; */
+		.full-input input::-webkit-outer-spin-button,
+		.full-input input::-webkit-inner-spin-button
+		{
+			-webkit-appearance: none;
+			margin: 0;
+		}
+
 		.full-input input::placeholder {
 			color: darkgray;
 		}
