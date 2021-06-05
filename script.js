@@ -223,7 +223,7 @@
 					console.log(key + " => " + value.name);
 					if (value.builtIn === true)
 						builtInScreenAlreadyFound = true;
-					if(value.wRes == cScreen.wRes || value.hRes == cScreen.hRes)
+					if( (value.wRes == cScreen.wRes || value.hRes == cScreen.wRes) && (value.wRes == cScreen.hRes || value.hRes == cScreen.hRes))
 					{
 						currentScreenIsNew = false;
 						// INJECT THE CALIBRATION DATA IN THE APP
