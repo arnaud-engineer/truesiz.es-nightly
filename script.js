@@ -531,6 +531,42 @@
 		document.getElementById("deviceResolution").textContent = Math.round(cScreen.wRes) + " x " + Math.round(cScreen.hRes); 
 	}
 
+	function drawFrame()
+	{
+		let canvasColor = "#2b2b2b";
+		// IF THE BROWSER SUPPORTS DARK MODE
+		if (window.matchMedia('(prefers-color-scheme)').media !== 'not all') {
+			console.log('🎉 Dark mode is supported');
+			if (window.matchMedia('(prefers-color-scheme: dark)').matches === true) {
+				canvasColor = "Gainsboro";
+			}
+		}
+
+		var canvas = document.getElementById("frame-1");
+		var ctx = canvas.getContext("2d");
+		ctx.fillStyle = canvasColor;
+		ctx.fillRect(0,0,12,150);
+		ctx.fillRect(0,0,150,12);
+
+		canvas = document.getElementById("frame-2");
+		ctx = canvas.getContext("2d");
+		ctx.fillStyle = canvasColor;
+		ctx.fillRect(150,0,-12,150);
+		ctx.fillRect(150,0,-150,12);
+
+		canvas = document.getElementById("frame-3");
+		ctx = canvas.getContext("2d");
+		ctx.fillStyle = canvasColor;
+		ctx.fillRect(150,150,-12,-150);
+		ctx.fillRect(150,150,-150,-12);
+
+		canvas = document.getElementById("frame-4");
+		ctx = canvas.getContext("2d");
+		ctx.fillStyle = canvasColor;
+		ctx.fillRect(0,150,12,-150);
+		ctx.fillRect(150,150,-150,-12);
+	}
+
 /*  =========================================================================
 	 MAIN
 	========================================================================= */
@@ -541,38 +577,15 @@
 			 CANVAS FRAME
 			---------------------------------------- */
 
-			let canvasColor = "#2b2b2b";
-			// IF THE BROWSER SUPPORTS DARK MODE
-			if (window.matchMedia('(prefers-color-scheme)').media !== 'not all') {
-				console.log('🎉 Dark mode is supported');
-				if (window.matchMedia('(prefers-color-scheme: dark)').matches === true) {
-					canvasColor = "Gainsboro";
-				}
-			}
+			drawFrame();
 
-			var canvas = document.getElementById("frame-1");
-			var ctx = canvas.getContext("2d");
-			ctx.fillStyle = canvasColor;
-			ctx.fillRect(0,0,12,150);
-			ctx.fillRect(0,0,150,12);
-
-			canvas = document.getElementById("frame-2");
-			ctx = canvas.getContext("2d");
-			ctx.fillStyle = canvasColor;
-			ctx.fillRect(150,0,-12,150);
-			ctx.fillRect(150,0,-150,12);
-
-			canvas = document.getElementById("frame-3");
-			ctx = canvas.getContext("2d");
-			ctx.fillStyle = canvasColor;
-			ctx.fillRect(150,150,-12,-150);
-			ctx.fillRect(150,150,-150,-12);
-
-			canvas = document.getElementById("frame-4");
-			ctx = canvas.getContext("2d");
-			ctx.fillStyle = canvasColor;
-			ctx.fillRect(0,150,12,-150);
-			ctx.fillRect(150,150,-150,-12);
+			// DARK MODE CHANGE LIVE UPDATE https://web.dev/prefers-color-scheme/
+			const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+			darkModeMediaQuery.addListener((e) => {
+				const darkModeOn = e.matches;
+				console.log(`Dark mode is ${darkModeOn ? '🌒 on' : '☀️ off'}.`);
+				drawFrame();
+			});
 
 
 		/*  ----------------------------------------
