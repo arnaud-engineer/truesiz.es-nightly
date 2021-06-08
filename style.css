@@ -11,6 +11,10 @@
 		letter-spacing: -1.25px;
 	}
 
+	textarea:focus, input:focus {
+    	outline: none;
+	}
+
 /*  =========================================================================
 	 Z-INDEX PRIORITIES
 	========================================================================= */
@@ -249,238 +253,214 @@
 		 APP INPUTS (bottom-right)
 		---------------------------------------- */
 
-	form
-	{
-		text-align: center;
-		padding-top: 10px;
-		padding-bottom: 10px;
+		/*  ---------------
+			 SIZE INPUTS
+			--------------- */
 
-		/*background-color: red;*/
-	}
-
-	form input
-	{
-		width: 40px;
-	}
-
-
-
-	#input-form
-	{
-		position: fixed;
-		bottom: 0;
-		right: 0;
-
-		margin: 38px; /* for old ios devices */
-		margin: max(38px, 4%);/*48px;*/
-	}
-
-
-	.full-input
-	{
-		padding: 3px;
-		margin-top: 6px;
-		width: 70px;
-
-		transition: all .2s ease;
-	}
-
-		.full-input input:hover, .full-input input:focus
+		#input-form
 		{
-			transform: scale(.98);
-			opacity: .8;
+			position: fixed;
+			bottom: 0;
+			right: 0;
+
+			margin: 38px; /* for old ios devices */
+			margin: max(38px, 4%);
 		}
 
-			.full-input input:disabled:hover
+			#input-form form
 			{
-				transform: scale(1);
-				opacity: 1;
+				text-align: center;
+				padding-top: 10px;
+				padding-bottom: 10px;
 			}
 
-		.full-input input {
-			width: 60px;
-			outline: none;
-			border: none;
-			display: block;
-			font-size: 24px;
-			letter-spacing: -1.25px;
-
-			-webkit-appearance: none;
-			-moz-appearance: textfield;
-
-			color: gray;
-			background-color: transparent;
-		}
-
-			/* Webkit fix to prevent arrows with input number : does not work; */
-			.full-input input::-webkit-outer-spin-button,
-			.full-input input::-webkit-inner-spin-button
-			{
-				-webkit-appearance: none;
-				margin: 0;
-			}
-
-			.full-input input::placeholder {
-				color: darkgray;
-			}
-
-		.full-input label {
-			text-align: left;
-			display: block;
-			font-size: 16px;
-			letter-spacing: -.75px;
-			color: gray;
-		}
+				#input-form form input
+				{
+					width: 40px;
+				}
 
 
-	#calibration-zoom
-	{
-		position: fixed;
-		bottom: 48px;
-		right: 48px;
-
-		display: none;
-
-		/*display: flex;*/
-		flex-direction: column;
-		text-align: center;
-	}
-
-		#calibration-zoom button
+		.full-input
 		{
-			font-size: 40px;
-			width: 80px;
-			height: 80px;
-
-			flex-direction: column;
-			text-align: center;
-			margin: auto;
-		}
-
-
-
-
-
-
-
-
-
-
-
-#device-info
-{
-	position: fixed;
-	bottom: 0;
-	left: 0;
-
-	margin: 38px; /* for old ios devices */
-	margin: max(38px, 4%);/*48px;*/
-
-	/*background-color: yellow;*/
-}
-
-	#device-info h1
-	{
-		font-size: 24px;
-		letter-spacing: -1.25px;
-		color: grey;
-	}
-
-	#device-info div
-	{
-		/*padding-left: 30px;*/
-		font-size: 16px;
-		letter-spacing: -.75px;
-		/*text-transform: lowercase;*/
-		color: darkgrey;
-	}
-
-	#device-info #calibrationBox
-	{
-		position: relative;
-		/*background-color: yellow;*/
-
-		/*display: flex;*/
-
-		height: 80px;
-		width: 300px;
-	}
-
-		#calibrationBox #calibrationIcon
-		{
-			position: absolute;
-			top: 0px;
-			left: 0px;
-			width: 80px;
-			height: 80px;
-			/*font-size: 70px;*/
-			/*background-color: red;*/
-			padding: 15px;
-		}
-
-		#calibrationBox #calibrationStatus
-		{
-			position: absolute;
-			top: 0px;
-			left: 80px;
-			min-width: 220px;
-			height: 40px;
-
-			/*background-color: green;*/
-
-			font-size: 24px;
-			letter-spacing: -1.25px;
-			padding-top: 16px;
-
-			color: grey;
-		}
-
-		#calibrationBox #calibrationButtons
-		{
-			position: absolute;
-			top: 40px;
-			left: 80px;
-			width: 220px;
-			height: 40px;
-
-			/*background-color: purple;*/
-
-			padding-top: 5px;
-			padding-left: 5px;
-		}
-
-		#calibrationBox #calibrationButtons button
-		{
-			background-color: transparent;
-			border: .05px darkgray solid;
-			border-style: none none none solid;
-			padding: 2px;
-			padding-left: 5px;
-
-			font-size: 14px;
-			letter-spacing: -.75px;
-			color: gray;
-
-
-			cursor: pointer;
+			padding: 3px;
+			margin-top: 6px;
+			width: 70px;
 
 			transition: all .2s ease;
 		}
 
-		#calibrationBox #calibrationButtons button:hover
+			.full-input input {
+				width: 60px;
+				outline: none;
+				border: none;
+				display: block;
+				font-size: 24px;
+				letter-spacing: -1.25px;
+
+				-webkit-appearance: none;
+				-moz-appearance: textfield;
+
+				color: gray;
+				background-color: transparent;
+			}
+
+				/* Webkit fix to prevent arrows with input number : does not work; */
+				.full-input input::-webkit-outer-spin-button,
+				.full-input input::-webkit-inner-spin-button
+				{
+					-webkit-appearance: none;
+					margin: 0;
+				}
+
+				.full-input input::placeholder {
+					color: darkgray;
+				}
+
+				.full-input input:hover, .full-input input:focus
+				{
+					transform: scale(.98);
+					opacity: .8;
+				}
+
+					.full-input input:disabled:hover
+					{
+						transform: scale(1);
+						opacity: 1;
+					}
+
+			.full-input label {
+				text-align: left;
+				display: block;
+				font-size: 16px;
+				letter-spacing: -.75px;
+				color: gray;
+			}
+
+
+		/*  ---------------
+			 CALIBRATION ZOOM BUTTONS
+			--------------- */
+
+		#calibration-zoom
 		{
-			transform: scale(.98);
-			opacity: .8;
+			position: fixed;
+			bottom: 48px;
+			right: 48px;
+
+			display: none; /* flex  when displayed */
+			flex-direction: column;
+			text-align: center;
 		}
 
+			#calibration-zoom button
+			{
+				font-size: 40px;
+				width: 80px;
+				height: 80px;
+
+				flex-direction: column;
+				text-align: center;
+				margin: auto;
+			}
 
 
+	/*  ----------------------------------------
+		 CALIBRATION ZONE (bottom-left)
+		---------------------------------------- */
+
+		#device-info
+		{
+			position: fixed;
+			bottom: 0;
+			left: 0;
+
+			margin: 38px; /* for old ios devices */
+			margin: max(38px, 4%);
+		}
+
+			#device-info h1
+			{
+				font-size: 24px;
+				letter-spacing: -1.25px;
+				color: grey;
+			}
+
+			#device-info div
+			{
+				font-size: 16px;
+				letter-spacing: -.75px;
+				color: darkgrey;
+			}
+
+			#device-info #calibrationBox
+			{
+				position: relative;
+
+				height: 80px;
+				width: 300px;
+			}
+
+				#calibrationBox #calibrationIcon
+				{
+					position: absolute;
+					top: 0px;
+					left: 0px;
+					width: 80px;
+					height: 80px;
+
+					padding: 15px;
+				}
+
+				#calibrationBox #calibrationStatus
+				{
+					position: absolute;
+					top: 0px;
+					left: 80px;
+					min-width: 220px;
+					height: 40px;
+
+					font-size: 24px;
+					letter-spacing: -1.25px;
+					padding-top: 16px;
+
+					color: grey;
+				}
+
+				#calibrationBox #calibrationButtons
+				{
+					position: absolute;
+					top: 40px;
+					left: 80px;
+					width: 220px;
+					height: 40px;
+
+					padding-top: 5px;
+					padding-left: 5px;
+				}
+
+				#calibrationBox #calibrationButtons button
+				{
+					background-color: transparent;
+					border: .05px darkgray solid;
+					border-style: none none none solid;
+					padding: 2px;
+					padding-left: 5px;
+
+					font-size: 14px;
+					letter-spacing: -.75px;
+					color: gray;
 
 
+					cursor: pointer;
 
-textarea:focus, input:focus{
-    outline: none;
-}
+					transition: all .2s ease;
+				}
+
+				#calibrationBox #calibrationButtons button:hover
+				{
+					transform: scale(.98);
+					opacity: .8;
+				}
 
 
 /*  =========================================================================
