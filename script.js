@@ -545,7 +545,9 @@
 			// IF THE BROWSER SUPPORTS DARK MODE
 			if (window.matchMedia('(prefers-color-scheme)').media !== 'not all') {
 				console.log('🎉 Dark mode is supported');
-				canvasColor = "Gainsboro";
+				if (window.matchMedia('(prefers-color-scheme: dark)').matches === true) {
+					canvasColor = "Gainsboro";
+				}
 			}
 
 			var canvas = document.getElementById("frame-1");
