@@ -146,12 +146,12 @@
 		---------------------------------------- */
 
 		/*  ---------------
-			 DEVICE DETECTION
+			 DEVICE IDENTIFICATION
 			--------------- */
 
 			function deviceRetrieval()
 			{
-				var alreadyCalibrated = localSaveRead();//readCookie();
+				var alreadyCalibrated = localSaveRead();
 				if (alreadyCalibrated === -1) {
 					cScreen.diagonal = 15.4; // default value
 					cScreen.name = "Unknown device";
@@ -165,13 +165,10 @@
 					cScreen.dpi = detectedScreen.dpi;
 					cScreen.builtIn = detectedScreen.builtIn;
 					setCalibrationStatus(detectedScreen.confidence);
-
-					//localSaveEdit(); -> deja inclus dans setCalibrationStatus()
 				}
 				else
 				{
 					setCalibrationStatus(cScreen.calibrationStatus);
-					//console.log("TEST : " + screen.calibrationStatus)
 				}
 			}
 
@@ -383,6 +380,8 @@
 			{
 				let warningMsg = "<p>check your screen calibration (confirm your model or verify the frame fits a credit card)</p><p>else, proceed manual calibration</p>";
 				let basicInstructionMsg = "<p>enter a width and an height to change my size</p>";
+
+				// USER-CALIBRATED
 				if (s === 4) {
 					cScreen.calibrationStatus = 4;
 					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/valid-icon.svg");
@@ -393,6 +392,7 @@
 					document.getElementById("instructions").getElementsByTagName("h1")[0].innerHTML = basicInstructionMsg;
 					localSaveEdit();
 				}
+				// SELF-CALIBRATED (highest confidence indice)
 				if (s === 3) {
 					cScreen.calibrationStatus = 3;
 					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/valid-icon.svg");
@@ -402,6 +402,7 @@
 					document.getElementById("instructions").getElementsByTagName("h1")[0].innerHTML = basicInstructionMsg;
 					localSaveEdit();
 				}
+				// PROBABLY SELF-CALIBRATED (doubt or possible confusion)
 				else if (s === 2) {
 					cScreen.calibrationStatus = 2;
 					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/approximation-icon-v2.svg");
@@ -409,6 +410,7 @@
 					document.getElementById("reset-button").style.display = "none";
 					document.getElementById("instructions").getElementsByTagName("h1")[0].innerHTML = warningMsg + basicInstructionMsg;
 				}
+				// POORLY SELF-CALIBRATED (best-effort despite the lack of model detection)
 				else if (s === 1) {
 					cScreen.calibrationStatus = 1;
 					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/warning-icon.svg");
@@ -416,6 +418,7 @@
 					document.getElementById("reset-button").style.display = "none";
 					document.getElementById("instructions").getElementsByTagName("h1")[0].innerHTML = warningMsg + basicInstructionMsg;
 				}
+				// NOT CALIBRATED (too unsure to presume anything of complete lack of usable data)
 				else if (s === 0) {
 					cScreen.calibrationStatus = 0;
 					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/unknown-error-icon-v2.svg");
@@ -423,6 +426,7 @@
 					document.getElementById("reset-button").style.display = "none";
 					document.getElementById("instructions").getElementsByTagName("h1")[0].innerHTML = warningMsg + basicInstructionMsg;
 				}
+				// MANUAL CALIBRATING NOW
 				else if (s === -1) {
 					document.getElementById("calibrationStatus").textContent = "manual calibration";
 					document.getElementById("deviceName").textContent = "manual calibration";
@@ -431,7 +435,7 @@
 					document.getElementById("reset-button").style.display = "block";
 					document.getElementById("instructions").getElementsByTagName("h1")[0].innerHTML = basicInstructionMsg;
 				}
-				localSaveEdit();//editCookie();
+				localSaveEdit(); // TODO : usefull ?
 			}
 
 		/*  ---------------
@@ -473,9 +477,10 @@
 				document.getElementById("calibration-zoom").style.display = "none";
 				// Remove calibration controls
 				window.onwheel = function() {};
-				// return to the asked size TODO : is it really a good idea ?
+				// return to the asked size
 				reloadSquare();
-				localSaveEdit();//editCookie();
+				// Save calibration
+				localSaveEdit();
 			}
 
 
@@ -593,9 +598,6 @@
 					console.log("ERROR : unknown size unit (not cm, not inches)");
 			}
 
-			/*function changeSizeUnitAndReload()
-			{ changeSizeUnit(); reloadSquare(); }*/
-
 		/*  ---------------
 			 APPLY SIZE ENTRIES
 			--------------- */
@@ -633,6 +635,29 @@
 					}
 				}
 
+
+/*  =========================================================================
+	 MAIN UTILITIES
+	========================================================================= */
+
+	function deviceFoundProcedure()
+	{
+		// GET THE DEVICE (saved configuration or detection)
+		deviceRetrieval();
+		console.log((window.screen.width * window.devicePixelRatio) + " - " + cScreen.wRes);
+
+		// INTERFACE GENERATION BASED ON CONFIGURATION
+		changeSizeUnit(); // update the unit depending on the potential browser auto-completion
+		screenSizeButtonsGeneration();
+		calibrationObjectsListGeneration();
+			// First square dimensions : the preferred calibration object
+		changeCalibrationObject();
+
+		// DISPLAY DEVICE DATA
+		document.getElementById("deviceName").textContent = cScreen.name;
+		document.getElementById("deviceScreenSize").textContent = cScreen.diagonal.toFixed(1) + " inch.";
+		document.getElementById("deviceResolution").textContent = Math.round(cScreen.wRes) + " x " + Math.round(cScreen.hRes); 
+	}
 
 /*  =========================================================================
 	 MAIN
@@ -673,67 +698,18 @@
 			 DEVICE DETECTION
 			---------------------------------------- */
 
-			deviceRetrieval();
+			deviceFoundProcedure();
+
 			// SCREEN CHANGE LIVE DETECTION
-			setInterval(function(){
-				//var t = window.screen.width * window.devicePixelRatio;
-				 // if screen change and currently not calibrating
+			setInterval(function() {
+				// IF SCREEN CHANGE (except rotations)
 				if( ( (window.screen.width * window.devicePixelRatio != cScreen.wRes && window.screen.width * window.devicePixelRatio != cScreen.hRes) || (window.screen.height * window.devicePixelRatio != cScreen.wRes && window.screen.height * window.devicePixelRatio != cScreen.hRes) ) && screen.calibrationStatus != -1) {
 					cScreen = new Screen();
-					deviceRetrieval();
-					console.log((window.screen.width * window.devicePixelRatio) + " - " + cScreen.wRes);
-					changeSizeUnit();
-					screenSizeButtonsGeneration();
-					calibrationObjectsListGeneration();
-					changeCalibrationObject();
-
-					// DEVICE DATA DISPLAY
-					document.getElementById("deviceName").textContent = cScreen.name;
-					document.getElementById("deviceScreenSize").textContent = cScreen.diagonal.toFixed(1) + " inch.";
-					document.getElementById("deviceResolution").textContent = Math.round(cScreen.wRes) + " x " + Math.round(cScreen.hRes); 
+					deviceFoundProcedure();
 				}
 			}, 300);
-
-
-
-			
-
-
-			// INIT
-
-			changeSizeUnit(); // update the unit depending on the potential browser auto-completion
-			screenSizeButtonsGeneration();
-			calibrationObjectsListGeneration();
-
-			// Draw a first frame based on the preferred calibration object (or the top listed one (credit card))
-			/*
-			
-			*/
-
-			// First square dimensions : the preferred calibration object
-			changeCalibrationObject();
-
-
-			// DEVICE DATA DISPLAY
-			document.getElementById("deviceName").textContent = cScreen.name;
-			document.getElementById("deviceScreenSize").textContent = cScreen.diagonal.toFixed(1) + " inch.";
-			document.getElementById("deviceResolution").textContent = Math.round(cScreen.wRes) + " x " + Math.round(cScreen.hRes); 
 	});
 
 
 
 
-/*
-
-- Green
-	- Self-calibrated (regogniside device with 100% confidence or already manually calibrated)
-	- Calibrated screen (already calibrated by the user)
-- Orange
-	- Probably self-calibrated (recongisized device with a doubt or possbile confusion)
-	- Approximately self-calibrated (if device type of family only)
-- Red
-	- Poorly self-calibrated (lack of informations to have a good assumption)
-	- Not calibrated (not even possible to try a preset)
-
-
-*/
