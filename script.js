@@ -120,7 +120,6 @@
 		{
 			let generatedButtons = "";
 			for(var i=0 ; i<lResolutions.length ; i++) {
-				// TODO : touch does'nt work / is it still the case ?
 				generatedButtons += '<button onmousedown="changeResolution(' + lResolutions[i] + ')" >' + lResolutions[i] + '"' + '</button>';
 			}
 			generatedButtons += "<input id=\"customResolution\" autocomplete=\"off\" placeholder='X.XX\"' onchange='changeResolution(this.value)'/>";
@@ -131,7 +130,6 @@
 		{
 			let generatedSelect = "";
 			for(var i=0 ; i<lcalibObjects.length ; i++) {
-				// TODO : touch does'nt work
 				generatedSelect += "<option value='" + i + "'>" + lcalibObjects[i].name + "</option>";//'<button onmousedown="changeResolution(' + lResolutions[i] + ')" >' + lResolutions[i] + '"' + '</button>';
 			}
 			document.getElementById("calibrationObjectsList").innerHTML = generatedSelect;
@@ -252,8 +250,8 @@
 
 			function setCalibrationStatus(s)
 			{
-				let warningMsg = "<p>check your screen calibration (confirm your model or verify the frame fits a credit card)</p><p>else, proceed manual calibration</p>";
-				let basicInstructionMsg = "<p>enter a width and an height to change my size</p>";
+				let warningMsg = "<h1>check your screen calibration (confirm your model or verify the frame fits a credit card)</h1><h1>else, proceed manual calibration</h1>";
+				let basicInstructionMsg = "<h1>enter a width and an height to change my size</h1>";
 
 				// USER-CALIBRATED
 				if (s === 4) {
@@ -263,7 +261,7 @@
 					document.getElementById("calibrationStatus").innerHTML = cScreen.name;
 					document.getElementById("deviceName").textContent = cScreen.name;
 					document.getElementById("confirm-calibration-button").style.display = "none";
-					document.getElementById("instructions").getElementsByTagName("h1")[0].innerHTML = basicInstructionMsg;
+					document.getElementById("instructions").innerHTML = basicInstructionMsg;
 					localSaveEdit();
 				}
 				// SELF-CALIBRATED (highest confidence indice)
@@ -273,7 +271,7 @@
 					document.getElementById("calibrationStatus").innerHTML = "self-calibrated";
 					document.getElementById("confirm-calibration-button").style.display = "none";
 					document.getElementById("reset-button").style.display = "none";
-					document.getElementById("instructions").getElementsByTagName("h1")[0].innerHTML = basicInstructionMsg;
+					document.getElementById("instructions").innerHTML = basicInstructionMsg;
 					localSaveEdit();
 				}
 				// PROBABLY SELF-CALIBRATED (doubt or possible confusion)
@@ -282,7 +280,7 @@
 					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/approximation-icon-v2.svg");
 					document.getElementById("calibrationStatus").innerHTML = "probably self-calibrated";
 					document.getElementById("reset-button").style.display = "none";
-					document.getElementById("instructions").getElementsByTagName("h1")[0].innerHTML = warningMsg + basicInstructionMsg;
+					document.getElementById("instructions").innerHTML = warningMsg + basicInstructionMsg;
 				}
 				// POORLY SELF-CALIBRATED (best-effort despite the lack of model detection)
 				else if (s === 1) {
@@ -290,7 +288,7 @@
 					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/warning-icon.svg");
 					document.getElementById("calibrationStatus").innerHTML = "poorly self-calibrated";
 					document.getElementById("reset-button").style.display = "none";
-					document.getElementById("instructions").getElementsByTagName("h1")[0].innerHTML = warningMsg + basicInstructionMsg;
+					document.getElementById("instructions").innerHTML = warningMsg + basicInstructionMsg;
 				}
 				// NOT CALIBRATED (too unsure to presume anything of complete lack of usable data)
 				else if (s === 0) {
@@ -298,7 +296,7 @@
 					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/unknown-error-icon-v2.svg");
 					document.getElementById("calibrationStatus").innerHTML = "not calibrated";
 					document.getElementById("reset-button").style.display = "none";
-					document.getElementById("instructions").getElementsByTagName("h1")[0].innerHTML = warningMsg + basicInstructionMsg;
+					document.getElementById("instructions").innerHTML = warningMsg + basicInstructionMsg;
 				}
 				// MANUAL CALIBRATING NOW
 				else if (s === -1) {
@@ -307,7 +305,7 @@
 					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/calibration-icon.svg");
 					document.getElementById("confirm-calibration-button").style.display = "none";
 					document.getElementById("reset-button").style.display = "block";
-					document.getElementById("instructions").getElementsByTagName("h1")[0].innerHTML = basicInstructionMsg;
+					document.getElementById("instructions").innerHTML = basicInstructionMsg;
 				}
 				localSaveEdit(); // TODO : usefull ?
 			}

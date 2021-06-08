@@ -1,425 +1,361 @@
-:root
-{
-	
-}
+/*  =========================================================================
+	 ADD FLAVOUR TO VANILLA CSS
+	========================================================================= */
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+	* { margin: 0; padding: 0; box-sizing: border-box; }
 
+	body
+	{
+		font-family: "Helvetica", "Roboto", "Droid Sans", "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Arial", system-ui, -apple-system, BlinkMacSystemFont, Sans-serif;
+		font-size: 24px;
+		letter-spacing: -1.25px;
+	}
 
+/*  =========================================================================
+	 Z-INDEX PRIORITIES
+	========================================================================= */
 
-* { z-index: 10; }
-#title h1 { z-index: 11; }
-#square { z-index: 9; }
+	* { z-index: 10; }
 
-body
-{
-	font-family: Helvetica, Arial, Sans-serif;
+		#background canvas { z-index: -10; }
+		#title h1 { z-index: 11; }
+		#square { z-index: 9; }
 
-	/* default font */
-	font-size: 24px;
-	letter-spacing: -1.25px;
-	/*color: gray;*/
-}
+/*  =========================================================================
+	 BODY
+	========================================================================= */
 
-#background canvas
-{
-	z-index: -10;
+	/*  ----------------------------------------
+		 MAIN
+		---------------------------------------- */
 
-	margin: 20px;
-}
-
-#frame-1
-{
-	position: fixed;
-	top:0;
-	left:0;
-	box-shadow: -2px -2px 2px darkgray;
-}
-
-#frame-2
-{
-	position: fixed;
-	top:0;
-	right:0;
-	box-shadow: 2px -2px 2px darkgray;
-}
-
-#frame-3
-{
-	position: fixed;
-	bottom:0;
-	right:0;
-	box-shadow: 2px 2px 2px darkgray;
-}
-
-#frame-4
-{
-	position: fixed;
-	bottom:0;
-	left:0;
-	box-shadow: -2px 2px 2px darkgray;
-}
-
-#frame-1, #frame-2, #frame-3, #frame-4
-{ border-radius: 4px; }
-
-
-
-
-
-
-#square
-{
-	/*background-color: black;*/
-	background: rgb(131,58,180);
-	background: linear-gradient(45deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%); 
-	/* https://cssgradient.io/ */
-
-	border-radius: 4px;
-
-	color: white;
-	width: calc(20 * 221px / 5); /* 221px = 5 cm sur mon macbook -> approximatif */
-	height: calc(20 * 221px / 5);
-
-	box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
-
-
-	/* 1in css = 96 px */
-
-	display: flex;
-	flex-direction: column;
-	text-align: center;
-
-	overflow: hidden;
-
-	padding: 5px;
-}
-
-	/* TODO : marche moyen */
-	#square *
+	main
 	{
 		display: flex;
 		flex-direction: column;
 
-		margin: auto;
+		height: 100vh;
 	}
 
-		#square * *
-		{
+	/*  ----------------------------------------
+		 CANVAS FRAME
+		---------------------------------------- */
+
+	#background canvas
+	{ margin: 20px; }
+
+		#frame-1, #frame-2, #frame-3, #frame-4 {
+			position: fixed;
+			border-radius: 4px;
+		}
+
+		#frame-1 {
+			top:0; left:0;
+			box-shadow: -2px -2px 2px darkgray;
+		}
+
+		#frame-2 {
+			top:0; right:0;
+			box-shadow: 2px -2px 2px darkgray;
+		}
+
+		#frame-3 {
+			bottom:0; right:0;
+			box-shadow: 2px 2px 2px darkgray;
+		}
+
+		#frame-4 {
+			bottom:0; left:0;
+			box-shadow: -2px 2px 2px darkgray;
+		}
+
+/*  =========================================================================
+	 SQUARE (surface at the middle of the interface)
+	========================================================================= */
+
+	#square
+	{
+		/* INTERNAL DISPLAY */
+		display: flex;
+		flex-direction: column;
+		margin: auto;
+		text-align: center;
+		overflow: hidden;
+		padding: 5px;
+		/* THEME */
+		background: rgb(131,58,180); /* for old browsers compatibility */
+		background: linear-gradient(45deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%); /* https://cssgradient.io/ */
+		color: white;
+		box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+		/* SHAPE */
+		width: 700px; height: 400px; /* usefull only if app failure */
+		border-radius: 4px;
+	}
+
+		/* FORCE CONTENT TO BE FLEX */
+		#square *, #square * * {
 			display: flex;
 			flex-direction: column;
-
 			margin: auto;
 		}
 
-	#square h1
-	{
-		font-size: 20px;
-		font-weight: normal;
-		letter-spacing: -.9px;
+		/* MAIN CONTENTS TYPES */
+		#square h1
+		{
+			font-size: 20px;
+			font-weight: normal;
+			letter-spacing: -.9px;
 
-		max-width: 300px;
-	}
-
-	#square p
-	{
-		margin-bottom: 16px;
-
-		font-size: 20px;
-		font-weight: normal;
-		letter-spacing: -.75px;
-
-		max-width: 300px;
-
-		display: inline-block;
-		flex-direction: row;
-	}
-
-		#square p:last-child {
-			margin-bottom: 0px;
+			max-width: 300px;
 		}
 
-	#square button
-	{
-		flex-direction: row;
-
-		display: inline-block;
-		text-align: center;
-		width: 40px;
-	}
-
-	#square input
-	{
-		flex-direction: row;
-
-		display: inline-block;
-		text-align: center;
-		width: 40px;
-	}
-
-	#calibrationTools
-	{ display: none; }
-
-
-/*@media (min-resolution: 300dpi) { #square { background-color: red; } }
-@media (max-resolution: 300dpi) { #square { background-color: blue; } }*/
-
-
-
-
-#title
-{
-	position: fixed;
-	top: 0;
-	left: 0;
-
-	margin: 38px; /* for old ios devices */
-	margin: max(38px, 4%);/*48px;*/
-
-	/*width: 200px;
-	height: 50px;
-
-	background-color: yellow;*/
-}
-
-	#title h1
-	{
-		font-size: 52px;
-		letter-spacing: -2.5px;
-		text-transform: lowercase;
-		max-width: 320px;
-
-
-		/* https://www.cssportal.com/css-text-gradient-generator/ */
-		background: #833AB4;
-		background: -webkit-linear-gradient(to top right, #833AB4 0%, #FD1D1D 50%, #FCB045 100%);
-		background: -moz-linear-gradient(to top right, #833AB4 0%, #FD1D1D 50%, #FCB045 100%);
-		background: linear-gradient(to top right, #833AB4 0%, #FD1D1D 50%, #FCB045 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-
-
-
-		/*text-shadow: 1px 3px 0 #969696, 1px 13px 5px #aba8a8;*/
-		/*text-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
-*/
-
-	}
-
-	#title h2
-	{
-		padding-left: 20px;
-		font-size: 24px;
-		font-weight: normal;
-		letter-spacing: -1.25px;
-		text-transform: lowercase;
-
-		color: black;
-	}
-
-
-#credits
-{
-	position: fixed;
-	top: 0;
-	right: 0;
-
-	margin: 38px; /* for old ios devices */
-	margin: max(38px, 4%);/*48px;*/
-
-	color: darkgrey;
-
-	text-align: right;
-}
-
-	#credits h1
-	{
-		font-size: 24px;
-		font-weight: normal;
-		letter-spacing: -1.25px;
-	}
-
-		#credits h1 a
-		{ font-weight: bold; }
-
-	#credits p
-	{
-		font-size: 16px;
-		letter-spacing: -.75px;
-	}
-
-	#credits img
-	{
-		display: inline-block;
-		width: 40px;
-		vertical-align: middle;
-		color: grey;
-	}
-
-#credits a
-{
-	color: black;
-	text-decoration: none;
-
-	transition: all .2s ease;
-}
-
-	#credits a:hover
-	{
-		transform: scale(.98);
-		opacity: .8;
-	}
-
-
-
-
-
-
-
-main
-{
-	/*background-color: green;*/
-
-	/*margin-left: 20px;
-	margin-right: 20px;*/
-
-	/*width: max(90vw);
-	height: 80vh;*/
-
-	/*margin: 48px;
-	height: calc(100vh - 2 * 48px);*/
-	height: 100vh;
-
-	display: flex;
-	flex-direction: column;
-}
-
-main #square
-{
-	margin: auto;
-}
-
-
-
-
-
-
-
-form
-{
-	text-align: center;
-	padding-top: 10px;
-	padding-bottom: 10px;
-
-	/*background-color: red;*/
-}
-
-form input
-{
-	width: 40px;
-}
-
-
-
-
-
-
-
-
-
-
-#input-form
-{
-	position: fixed;
-	bottom: 0;
-	right: 0;
-
-	margin: 38px; /* for old ios devices */
-	margin: max(38px, 4%);/*48px;*/
-}
-
-
-.full-input
-{
-	/*border: .05px darkgray solid;*/
-	padding: 3px;
-	margin-top: 6px;
-	width: 70px;
-
-	transition: all .2s ease;
-}
-
-	.full-input input:hover, .full-input input:focus
-	{
-		transform: scale(.98);
-		opacity: .8;
-	}
-
-		.full-input input:disabled:hover
+			#square h1:last-child {
+				margin-bottom: 0px;
+			}
+
+		#square p
 		{
-			transform: scale(1);
-			opacity: 1;
+			margin-bottom: 16px;
+
+			font-size: 16px;
+			font-weight: normal;
+			letter-spacing: -.75px;
+
+			max-width: 300px;
+
+			display: inline-block;
+			flex-direction: row;
 		}
 
-	.full-input input {
-		width: 60px;
-		outline: none;
-		border: none;
-		display: block;
-		font-size: 24px;
-		letter-spacing: -1.25px;
+			#square p:last-child {
+				margin-bottom: 0px;
+			}
 
-		-webkit-appearance: none;
-		-moz-appearance: textfield;
+		#square button,
+		#square input
+		{
+			display: inline-block;
+			text-align: center;
+			width: 40px;
+			margin-left: 2px;
+		}
 
-		color: gray;
-		background-color: transparent;
+		/* HIDE CALIBRATION TOOLS AT APP LAUNCH */
+		#calibrationTools
+		{ display: none; }
+
+
+/*  =========================================================================
+	 APP CORNERS
+	========================================================================= */
+
+	/*  ----------------------------------------
+		 TITLE (top-left)
+		---------------------------------------- */
+
+		#title
+		{
+			position: fixed;
+			top: 0; left: 0;
+
+			margin: 38px; /* for old ios devices */
+			margin: max(38px, 4%);
+		}
+
+			#title h1
+			{
+				font-size: 52px;
+				letter-spacing: -2.5px;
+				text-transform: lowercase;
+				max-width: 320px;
+				/* TEXT GRADIENT :; https://www.cssportal.com/css-text-gradient-generator/ */
+				background: #833AB4;
+				background: -webkit-linear-gradient(to top right, #833AB4 0%, #FD1D1D 50%, #FCB045 100%);
+				background: -moz-linear-gradient(to top right, #833AB4 0%, #FD1D1D 50%, #FCB045 100%);
+				background: linear-gradient(to top right, #833AB4 0%, #FD1D1D 50%, #FCB045 100%);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+			}
+
+			#title h2
+			{
+				/* DECALAGE */
+				padding-left: 20px;
+
+				font-size: 24px;
+				font-weight: normal;
+				letter-spacing: -1.25px;
+				text-transform: lowercase;
+				color: black;
+			}
+
+
+	/*  ----------------------------------------
+		 CREDITS (top-right)
+		---------------------------------------- */
+
+		#credits
+		{
+			position: fixed;
+			top: 0; right: 0;
+
+			margin: 38px; /* for old ios devices */
+			margin: max(38px, 4%);
+
+			color: darkgrey;
+			text-align: right;
+		}
+
+			#credits h1
+			{
+				font-size: 24px;
+				font-weight: normal;
+				letter-spacing: -1.25px;
+			}
+
+				#credits h1 a
+				{ font-weight: bold; }
+
+			#credits p
+			{
+				font-size: 16px;
+				letter-spacing: -.75px;
+			}
+
+			#credits img
+			{
+				display: inline-block;
+				width: 40px;
+				vertical-align: middle;
+				color: grey;
+			}
+
+			#credits a
+			{
+				color: black;
+				text-decoration: none;
+
+				transition: all .2s ease;
+			}
+
+				#credits a:hover
+				{
+					transform: scale(.98);
+					opacity: .8;
+				}
+
+
+	/*  ----------------------------------------
+		 APP INPUTS (bottom-right)
+		---------------------------------------- */
+
+	form
+	{
+		text-align: center;
+		padding-top: 10px;
+		padding-bottom: 10px;
+
+		/*background-color: red;*/
 	}
 
-		/* Webkit fix to prevent arrows with input number : does not work; */
-		.full-input input::-webkit-outer-spin-button,
-		.full-input input::-webkit-inner-spin-button
+	form input
+	{
+		width: 40px;
+	}
+
+
+
+	#input-form
+	{
+		position: fixed;
+		bottom: 0;
+		right: 0;
+
+		margin: 38px; /* for old ios devices */
+		margin: max(38px, 4%);/*48px;*/
+	}
+
+
+	.full-input
+	{
+		padding: 3px;
+		margin-top: 6px;
+		width: 70px;
+
+		transition: all .2s ease;
+	}
+
+		.full-input input:hover, .full-input input:focus
 		{
+			transform: scale(.98);
+			opacity: .8;
+		}
+
+			.full-input input:disabled:hover
+			{
+				transform: scale(1);
+				opacity: 1;
+			}
+
+		.full-input input {
+			width: 60px;
+			outline: none;
+			border: none;
+			display: block;
+			font-size: 24px;
+			letter-spacing: -1.25px;
+
 			-webkit-appearance: none;
-			margin: 0;
+			-moz-appearance: textfield;
+
+			color: gray;
+			background-color: transparent;
 		}
 
-		.full-input input::placeholder {
-			color: darkgray;
+			/* Webkit fix to prevent arrows with input number : does not work; */
+			.full-input input::-webkit-outer-spin-button,
+			.full-input input::-webkit-inner-spin-button
+			{
+				-webkit-appearance: none;
+				margin: 0;
+			}
+
+			.full-input input::placeholder {
+				color: darkgray;
+			}
+
+		.full-input label {
+			text-align: left;
+			display: block;
+			font-size: 16px;
+			letter-spacing: -.75px;
+			color: gray;
 		}
 
-	.full-input label {
-		text-align: left;
-		display: block;
-		font-size: 16px;
-		letter-spacing: -.75px;
-		color: gray;
-	}
 
-
-#calibration-zoom
-{
-	position: fixed;
-	bottom: 48px;
-	right: 48px;
-
-	display: none;
-
-	/*display: flex;*/
-	flex-direction: column;
-	text-align: center;
-}
-
-	#calibration-zoom button
+	#calibration-zoom
 	{
-		font-size: 40px;
-		width: 80px;
-		height: 80px;
+		position: fixed;
+		bottom: 48px;
+		right: 48px;
 
+		display: none;
+
+		/*display: flex;*/
 		flex-direction: column;
 		text-align: center;
-		margin: auto;
 	}
+
+		#calibration-zoom button
+		{
+			font-size: 40px;
+			width: 80px;
+			height: 80px;
+
+			flex-direction: column;
+			text-align: center;
+			margin: auto;
+		}
 
 
 
@@ -547,65 +483,76 @@ textarea:focus, input:focus{
 }
 
 
+/*  =========================================================================
+	 AUTO-SCALING (RESPONSIVE)
+	========================================================================= */
 
+	#frame-1, #frame-2, #frame-3, #frame-4, #credits, #title h2, #input-form, #calibration-zoom, #device-info, #calibrationIcon, #calibrationButtons {
+		transition: all .4s ease-out;
+	}
 
-/* animation */
-#frame-1, #frame-2, #frame-3, #frame-4, #credits, #title h2, #input-form, #calibration-zoom, #device-info, #calibrationIcon, #calibrationButtons
-{
-	transition: all .4s ease-out;
-}
+	/*  ----------------------------------------
+		 LG
+		---------------------------------------- */
 
-/* lg */
-#frame-1, #frame-2, #frame-3, #frame-4
-{
-	transform: scale(.8);
-}
+	#frame-1, #frame-2, #frame-3, #frame-4 {
+		transform: scale(.8);
+	}
 
-	#frame-1 { transform-origin: top left; }
-	#frame-2 { transform-origin: top right; }
-	#frame-3, #calibration-zoom, #input-form
-	{ transform-origin: bottom right; }
-	#frame-4, #device-info, #calibrationIcon, #calibrationButtons
-	{ transform-origin: bottom left; }
+		#frame-1 { transform-origin: top left; }
+		#frame-2 { transform-origin: top right; }
+		#frame-3, #calibration-zoom, #input-form
+		{ transform-origin: bottom right; }
+		#frame-4, #device-info, #calibrationIcon, #calibrationButtons
+		{ transform-origin: bottom left; }
 
-/* md */
-@media (max-width: 1200px) {
-	#frame-1, #frame-2, #frame-3, #frame-4
-	{ transform: scale(.65); }
-}
+	/*  ----------------------------------------
+		 MD
+		---------------------------------------- */
 
-/* sm */
-@media (max-width: 992px) {
-	#frame-1, #frame-2, #frame-3, #frame-4
-	{ transform: scale(.5); }
+	@media (max-width: 1200px) {
+		#frame-1, #frame-2, #frame-3, #frame-4
+		{ transform: scale(.65); }
+	}
 
-	#input-form, #calibration-zoom
-	{ transform: scale(1.1); }
+	/*  ----------------------------------------
+		 SM
+		---------------------------------------- */
 
-	#device-info
-	{ transform: scale(.95); }
+	@media (max-width: 992px) {
+		#frame-1, #frame-2, #frame-3, #frame-4
+		{ transform: scale(.5); }
 
-	#calibrationIcon, #calibrationButtons
-	{ transform: scale(1.05); }
-}
+		#input-form, #calibration-zoom
+		{ transform: scale(1.1); }
 
-/* xs */
-@media (max-width: 768px) {
-	#frame-1, #frame-2, #frame-3, #frame-4
-	{ transform: scale(.35); }
+		#device-info
+		{ transform: scale(.95); }
 
-	#credits, #title h2
-	{ opacity: 0; }
+		#calibrationIcon, #calibrationButtons
+		{ transform: scale(1.05); }
+	}
 
-	#input-form, #calibration-zoom
-	{ transform: scale(1.2); }
+	/*  ----------------------------------------
+		 XS
+		---------------------------------------- */
 
-	#device-info
-	{ transform: scale(.9); }
+	@media (max-width: 768px) {
+		#frame-1, #frame-2, #frame-3, #frame-4
+		{ transform: scale(.35); }
 
-	#calibrationIcon, #calibrationButtons
-	{ transform: scale(1.1); }
-}
+		#credits, #title h2
+		{ opacity: 0; }
+
+		#input-form, #calibration-zoom
+		{ transform: scale(1.2); }
+
+		#device-info
+		{ transform: scale(.9); }
+
+		#calibrationIcon, #calibrationButtons
+		{ transform: scale(1.1); }
+	}
 
 
 
