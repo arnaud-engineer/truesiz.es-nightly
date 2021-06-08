@@ -541,27 +541,34 @@
 			 CANVAS FRAME
 			---------------------------------------- */
 
+			let canvasColor = "#2b2b2b";
+			// IF THE BROWSER SUPPORTS DARK MODE
+			if (window.matchMedia('(prefers-color-scheme)').media !== 'not all') {
+				console.log('🎉 Dark mode is supported');
+				canvasColor = "Gainsboro";
+			}
+
 			var canvas = document.getElementById("frame-1");
 			var ctx = canvas.getContext("2d");
-			ctx.fillStyle = "#2b2b2b";
+			ctx.fillStyle = canvasColor;
 			ctx.fillRect(0,0,12,150);
 			ctx.fillRect(0,0,150,12);
 
 			canvas = document.getElementById("frame-2");
 			ctx = canvas.getContext("2d");
-			ctx.fillStyle = "#2b2b2b";
+			ctx.fillStyle = canvasColor;
 			ctx.fillRect(150,0,-12,150);
 			ctx.fillRect(150,0,-150,12);
 
 			canvas = document.getElementById("frame-3");
 			ctx = canvas.getContext("2d");
-			ctx.fillStyle = "#2b2b2b";
+			ctx.fillStyle = canvasColor;
 			ctx.fillRect(150,150,-12,-150);
 			ctx.fillRect(150,150,-150,-12);
 
 			canvas = document.getElementById("frame-4");
 			ctx = canvas.getContext("2d");
-			ctx.fillStyle = "#2b2b2b";
+			ctx.fillStyle = canvasColor;
 			ctx.fillRect(0,150,12,-150);
 			ctx.fillRect(150,150,-150,-12);
 

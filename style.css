@@ -276,7 +276,7 @@
 
 				#input-form form input
 				{
-					width: 40px;
+					width: 60px;
 				}
 
 
@@ -471,6 +471,12 @@
 		transition: all .4s ease-out;
 	}
 
+		/* LIMITED ANIMATIONS */
+		@media (prefers-reduced-motion: reduce)
+		{
+			* { transition: all .4s ease-out !important; }
+		}
+
 	/*  ----------------------------------------
 		 LG
 		---------------------------------------- */
@@ -534,8 +540,39 @@
 		{ transform: scale(1.1); }
 	}
 
+/*  =========================================================================
+	 AUTO-SCALING (RESPONSIVE)
+	========================================================================= */
 
+	/* TODO : DIRTY VERSION, MAKE IT BEAUTIFUL + CANVAS ADAPTATION + SHADOWS ? */
 
+	@media (prefers-color-scheme: dark)
+	{
+		canvas { opacity: .35; }
+
+		body { background-color: black; }
+		#title h2 { color: gainsboro; }
+		#credits { color: gainsboro; }
+		#credits img { color: white; }
+		#credits a { color: white; }
+
+		.full-input input { color: white; }
+			.full-input input::placeholder { color: white !important; opacity: .5; }
+			.full-input input:hover::placeholder { opacity: 1; }
+		.full-input label { color: gainsboro; }
+
+		#device-info h1 { color: white; }
+		#device-info div { color: gainsboro; }
+
+		#calibrationBox #calibrationStatus { color: white; }
+		#calibrationBox #calibrationButtons button { color: gainsboro; }
+
+		/*
+		Gainsboro
+		WhiteSmoke
+		White
+		*/
+	}
 
 
 
