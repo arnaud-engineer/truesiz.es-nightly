@@ -32,11 +32,6 @@
 				this.preferredCalibrationObject = 0;
 				this.calibrationStatus = null;
 				this.confirmedCalibration = false;
-
-				/*
-					IDEAS :
-					- built-in-screen : allows to detect external monitor easily if new screen added
-				*/
 			}
 		}
 
@@ -56,14 +51,18 @@
 		}
 
 /*  =========================================================================
-	 POSSIBLE RESOLUTIONS
+	 DATA
 	========================================================================= */
+
+	/*  ----------------------------------------
+		 POSSIBLE RESOLUTIONS
+		---------------------------------------- */
 
 	var lResolutions = [5, 5.5, 6, 6.5, 7, 8, 9, 9.7, 10.1, 11.6, 13.3, 14, 15.6, 17.3, 19, 21.5, 24, 27, 32, 49];
 
-/*  =========================================================================
-	 CALIBRATION OBJECTS
-	========================================================================= */
+	/*  ----------------------------------------
+		 CALIBRATION OBJECTS
+		---------------------------------------- */
 
 	var lcalibObjects = [
 		new CalibrationObjects("Credit Card", 8.56, 5.398),
@@ -121,10 +120,9 @@
 		{
 			let generatedButtons = "";
 			for(var i=0 ; i<lResolutions.length ; i++) {
-				// TODO : touch does'nt work
+				// TODO : touch does'nt work / is it still the case ?
 				generatedButtons += '<button onmousedown="changeResolution(' + lResolutions[i] + ')" >' + lResolutions[i] + '"' + '</button>';
 			}
-			//generatedButtons += '<input id="customResolution"  autocomplete="off" placeholder=' + 'X.XX"' '\'/>';
 			generatedButtons += "<input id=\"customResolution\" autocomplete=\"off\" placeholder='X.XX\"' onchange='changeResolution(this.value)'/>";
 			document.getElementById("screenSizeButtons").innerHTML = generatedButtons;
 		}
@@ -136,8 +134,6 @@
 				// TODO : touch does'nt work
 				generatedSelect += "<option value='" + i + "'>" + lcalibObjects[i].name + "</option>";//'<button onmousedown="changeResolution(' + lResolutions[i] + ')" >' + lResolutions[i] + '"' + '</button>';
 			}
-			//generatedButtons += '<input id="customResolution"  autocomplete="off" placeholder=' + 'X.XX"' '\'/>';
-			//generatedSelect += "<input id=\"customResolution\" autocomplete=\"off\" placeholder='X.XX\"' onchange='changeResolution(this.value)'/>";
 			document.getElementById("calibrationObjectsList").innerHTML = generatedSelect;
 		}
 
@@ -158,7 +154,6 @@
 
 					var detectedScreen = deviceDetection(builtInScreenAlreadyFound);
 
-
 					// INTERFACE DATA UPDATE
 					cScreen.name = detectedScreen.name;
 					cScreen.diagonal = detectedScreen.screenSize;
@@ -173,19 +168,18 @@
 			}
 
 		/*  ---------------
-			 CALIBRATION MEMORY
+			 CALIBRATION SAVE
 			--------------- */
 
 			function localSaveEdit()
 			{
-				//localStorage.setItem('monChat', JSON.stringify(screen));
 				let currentScreenIsNew = true;
 				var i;
 				for(i=0 ; i<localStorage.length; i++) {
 					var key = localStorage.key(i);
 					var value = JSON.parse(localStorage[key]);
-					console.log(key + " => " + value.name);
-					//console.log(value.wRes + " = " + screen.wRes + " - " + value.hRes + " = " + screen.hRes);
+					console.log("SAVE EDIT : " + key + " => " + value.name);
+					// TODO : SEEMS UNABLE TO DETECT ROTATED SCREEN
 					if(value.wRes == cScreen.wRes || value.hRes == cScreen.hRes)
 					{
 						localStorage.setItem(key, JSON.stringify(cScreen));
@@ -198,18 +192,6 @@
 				}
 			}
 
-			function localSaveRemove()
-			{
-				//localStorage.removeItem('myCat');
-				localStorage.clear();
-			}
-
-				function resetApp()
-				{
-					localSaveRemove();
-					document.location.reload();
-				}
-
 			function localSaveRead()
 			{
 				let currentScreenIsNew = true;
@@ -217,9 +199,10 @@
 				for(i=0 ; i<localStorage.length; i++) {
 					var key = localStorage.key(i);
 					var value = JSON.parse(localStorage[key]);
-					console.log(key + " => " + value.name);
+					console.log("SAVE READ : " + key + " => " + value.name);
 					if (value.builtIn === true)
 						builtInScreenAlreadyFound = true;
+					// TODO : SEEMS UNABLE TO DETECT ROTATED SCREEN
 					if( (value.wRes == cScreen.wRes || value.hRes == cScreen.wRes) && (value.wRes == cScreen.hRes || value.hRes == cScreen.hRes))
 					{
 						currentScreenIsNew = false;
@@ -248,122 +231,13 @@
 				{
 					return -1;
 				}
-				/*
-				var cat = localStorage.getItem('monChat');
-				cat = JSON.parse(cat);
-				console.log("T : " + cat.wRes);*/
 			}
 
+			function localSaveRemove()
+			{ localStorage.clear(); }
 
-			//localSaveEdit();
-			//localSaveRead();
-			//localSaveRemove();
-			//localSaveRead();
-
-
-/*
-			// COOKIE CREATION
-			function editCookie()
-			{
-				// Expiration date generation
-				var d = new Date();
-				d.setDate(Date.now() + 365 * 5);
-				var expires = "expires="+d.toUTCString();
-				// Final write
-				document.cookie = "name=" + screen.name + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "deviceFamily=" + screen.deviceFamily + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "diagonal=" + screen.diagonal + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "dpi=" + screen.dpi + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "dppx=" + screen.dppx + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "wRes=" + screen.wRes + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "hRes=" + screen.hRes + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "preferredUnit=" + screen.preferredUnit + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "preferredCalibrationObject=" + screen.preferredCalibrationObject + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "confirmedCalibration=" + screen.confirmedCalibration + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "calibrationStatus=" + screen.calibrationStatus + ";" + expires + "; SameSite=None; Secure";
-				console.log("COOKIES UPDATE : " + document.cookie);
-				//removeCookie();
-			}
-
-			function removeCookie()
-			{
-				// Expiration date generation
-				var expires = "expires=Thu, 01 Jan 1970 00:00:00 UTC";
-				// Final write
-				document.cookie = "name=" + screen.name + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "deviceFamily=" + screen.deviceFamily + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "diagonal=" + screen.diagonal + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "dpi=" + screen.dpi + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "dppx=" + screen.dppx + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "wRes=" + screen.wRes + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "hRes=" + screen.hRes + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "preferredUnit=" + screen.preferredUnit + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "preferredCalibrationObject=" + screen.preferredCalibrationObject + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "confirmedCalibration=" + screen.confirmedCalibration + ";" + expires + "; SameSite=None; Secure";
-				document.cookie = "calibrationStatus=" + screen.calibrationStatus + ";" + expires + "; SameSite=None; Secure";
-				console.log("COOKIES UPDATE : " + document.cookie);
-			}
-
-
-
-			function readCookie()
-			{
-				var cookies = getCookiesMap(document.cookie);
-
-				if (	(typeof cookies["name"] !== 'undefined') || (typeof cookies["deviceFamily"] !== 'undefined') ||
-						(typeof cookies["diagonal"] !== 'undefined') || (typeof cookies["dpi"] !== 'undefined') ||
-						(typeof cookies["dppx"] !== 'undefined') || (typeof cookies["wRes"] !== 'undefined') ||
-						(typeof cookies["hRes"] !== 'undefined') || (typeof cookies["preferredUnit"] !== 'undefined') || 
-						(typeof cookies["preferredCalibrationObject"] !== 'undefined') ||
-						(typeof cookies["confirmedCalibration"] !== 'undefined')	)
-				{
-					// IF AN UNKNOWN SCREEN IS DETECTED
-					var t1 = parseFloat(cookies["wRes"]);
-					var t2 = screen.wRes;
-					if(parseFloat(cookies["wRes"]) != screen.wRes || parseFloat(cookies["hRes"]) != screen.hRes)
-					{
-						alert("new screen");
-					}
-					else
-					{
-						// INJECT THE CALIBRATION DATA IN THE APP
-						try {
-							screen.name = cookies["name"];
-							screen.deviceFamily = cookies["deviceFamily"];
-							screen.diagonal = parseFloat(cookies["diagonal"]);
-							screen.dpi = parseFloat(cookies["dpi"]);
-							screen.dppx = parseFloat(cookies["dppx"]);
-							screen.wRes = parseFloat(cookies["wRes"]);
-							screen.hRes = parseFloat(cookies["hRes"]);
-							screen.preferredUnit = cookies["preferredUnit"];
-							screen.preferredCalibrationObject = parseFloat(cookies["preferredCalibrationObject"]);
-							screen.confirmedCalibration = (cookies["confirmedCalibration"] === 'true');
-							screen.calibrationStatus = parseFloat(cookies["calibrationStatus"]);
-							return 1;
-						}
-						catch(e) {
-							return -1;
-						}
-					}
-				}
-				else {
-					return -1;
-				}
-			}
-
-
-				// https://stackoverflow.com/questions/5142337/read-a-javascript-cookie-by-name/11767598
-				function getCookiesMap(cookiesString)
-				{
-					return cookiesString.split(";")
-					.map(function(cookieString) {
-						return cookieString.trim().split("=");
-					})
-					.reduce(function(acc, curr) {
-						acc[curr[0]] = curr[1];
-						return acc;
-					}, {});
-				}*/
+				function resetApp()
+				{ localSaveRemove(); document.location.reload(); }
 
 		/*  ---------------
 			 STATUS
@@ -373,7 +247,7 @@
 			{
 				setCalibrationStatus(3);
 				cScreen.confirmedCalibration = true;
-				localSaveEdit();//editCookie();
+				localSaveEdit();
 			}
 
 			function setCalibrationStatus(s)
@@ -501,7 +375,7 @@
 					document.getElementById("square").style.width = realCm(lcalibObjects[cScreen.preferredCalibrationObject].height);
 					document.getElementById("square").style.height = realCm(lcalibObjects[cScreen.preferredCalibrationObject].width);
 				}
-				localSaveEdit();//editCookie();
+				localSaveEdit();
 			}
 
 			function changeResolutionOnScroll()
