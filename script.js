@@ -306,6 +306,7 @@
 					document.getElementById("calibration-zoom").style.display = "none";
 					document.getElementById("reset-button").style.display = "none";
 					//document.getElementById("calibration-button").style.display = "none";
+					document.getElementById("confirm-calibration-button").style.display = "inline-block";
 					document.getElementById("input-form").style.display = "block";
 					document.getElementById("instructions").innerHTML = warningMsg + basicInstructionMsg;
 					document.getElementById("instructions").style.display = "block";
@@ -320,6 +321,7 @@
 					document.getElementById("calibration-zoom").style.display = "none";
 					document.getElementById("reset-button").style.display = "none";
 					//document.getElementById("calibration-button").style.display = "none";
+					document.getElementById("confirm-calibration-button").style.display = "inline-block";
 					document.getElementById("input-form").style.display = "block";
 					document.getElementById("instructions").innerHTML = warningMsg + basicInstructionMsg;
 					document.getElementById("instructions").style.display = "block";
@@ -334,6 +336,7 @@
 					document.getElementById("calibration-zoom").style.display = "none";
 					document.getElementById("reset-button").style.display = "none";
 					//document.getElementById("calibration-button").style.display = "none";
+					document.getElementById("confirm-calibration-button").style.display = "inline-block";
 					document.getElementById("input-form").style.display = "block";
 					document.getElementById("instructions").innerHTML = warningMsg + basicInstructionMsg;
 					document.getElementById("instructions").style.display = "block";
