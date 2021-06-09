@@ -627,15 +627,6 @@
 
 		#calibrationBox #calibrationStatus { color: white; }
 		#calibrationBox #calibrationButtons button { color: gainsboro; }
-
-
-		/*
-		filter: invert(27%)
-
-		Gainsboro
-		WhiteSmoke
-		White
-		*/
 	}
 
 
