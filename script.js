@@ -652,6 +652,11 @@
 			});
 			*/
 
+			if (window.matchMedia('(display-mode: standalone)').matches) {
+				console.log("This is running as standalone.");
+				goFullScreen();
+			}
+
 
 		/*  ----------------------------------------
 			 CANVAS FRAME
