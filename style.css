@@ -21,9 +21,11 @@
 
 	* { z-index: 10; }
 
-		#background canvas { z-index: -10; }
+		body { z-index: 1; }
+		main { z-index: 7; }
+		#background canvas { z-index: 9; }
 		#title { z-index: 11; }
-		#square { z-index: 9; }
+		#square { z-index: 8; }
 
 /*  =========================================================================
 	 BODY
@@ -43,6 +45,8 @@
 		display: flex;
 		flex-direction: column;
 
+		background-color: white;
+		width: 100vw;
 		height: 100vh;
 	}
 
@@ -603,7 +607,7 @@
 	{
 		canvas { opacity: .35; }
 
-		body { background-color: black; }
+		main { background-color: black; }
 		#title h2 { color: gainsboro; }
 		#credits { color: gainsboro; }
 		#credits img { color: white; }
