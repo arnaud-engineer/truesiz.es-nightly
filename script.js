@@ -8,6 +8,10 @@
 
 		var builtInScreenAlreadyFound = false;
 
+		// Fullscreen
+		var fullscreenAvailable = true;
+		var fullscreenStatus = false;
+
 	/*  ----------------------------------------
 		 SCREEN
 		---------------------------------------- */
@@ -514,6 +518,7 @@
 
 		function goFullScreen()
 		{
+			fullscreenStatus = true;
 			// Go fullscreen
 			var body = document.getElementsByTagName("body")[0];
 			body.requestFullscreen();
@@ -529,6 +534,7 @@
 			// End fullscreen button evolves into fullscreen button
 			document.getElementById("fullscreen-button").getElementsByTagName("img")[0].setAttribute("src", "rsrc/img/fullscreen-icon.svg");
 			document.getElementById("fullscreen-button").setAttribute("onmousedown", "goFullScreen();");
+			fullscreenStatus = false;
 		}
 
 /*  =========================================================================
@@ -619,10 +625,12 @@
 
 			// SCREEN CHANGE LIVE DETECTION
 			setInterval(function() {
-				// IF SCREEN CHANGE (except rotations)
-				if( ( (window.screen.width * window.devicePixelRatio != cScreen.wRes && window.screen.width * window.devicePixelRatio != cScreen.hRes) || (window.screen.height * window.devicePixelRatio != cScreen.wRes && window.screen.height * window.devicePixelRatio != cScreen.hRes) ) && screen.calibrationStatus != -1) {
-					cScreen = new Screen();
-					deviceFoundProcedure();
+				if(fullscreenStatus === false) {
+					// IF SCREEN CHANGE (except rotations)
+					if( ( (window.screen.width * window.devicePixelRatio != cScreen.wRes && window.screen.width * window.devicePixelRatio != cScreen.hRes) || (window.screen.height * window.devicePixelRatio != cScreen.wRes && window.screen.height * window.devicePixelRatio != cScreen.hRes) ) && screen.calibrationStatus != -1) {
+						cScreen = new Screen();
+						deviceFoundProcedure();
+					}
 				}
 			}, 300);
 	});
