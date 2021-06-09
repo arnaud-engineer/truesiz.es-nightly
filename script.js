@@ -524,11 +524,9 @@
 
 		function endFullScreen()
 		{
-			// Go fullscreen
-			//var body = document.getElementsByTagName("body")[0];
-			//body.requestFullscreen();
+			// End fullscreen
 			document.exitFullscreen();
-			// Fullscreen button evolves into end fullscreen button
+			// End fullscreen button evolves into fullscreen button
 			document.getElementById("fullscreen-button").getElementsByTagName("img")[0].setAttribute("src", "rsrc/img/fullscreen-icon.svg");
 			document.getElementById("fullscreen-button").setAttribute("onmousedown", "goFullScreen();");
 		}
