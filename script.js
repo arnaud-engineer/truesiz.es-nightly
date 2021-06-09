@@ -514,10 +514,23 @@
 
 		function goFullScreen()
 		{
+			// Go fullscreen
 			var body = document.getElementsByTagName("body")[0];
-			//if (body.requestFullscreen) {
-				body.requestFullscreen();
-			//}
+			body.requestFullscreen();
+			// Fullscreen button evolves into end fullscreen button
+			document.getElementById("fullscreen-button").getElementsByTagName("img")[0].setAttribute("src", "rsrc/img/fullscreen-end-icon.svg");
+			document.getElementById("fullscreen-button").setAttribute("onmousedown", "endFullScreen();");
+		}
+
+		function endFullScreen()
+		{
+			// Go fullscreen
+			//var body = document.getElementsByTagName("body")[0];
+			//body.requestFullscreen();
+			document.exitFullscreen();
+			// Fullscreen button evolves into end fullscreen button
+			document.getElementById("fullscreen-button").getElementsByTagName("img")[0].setAttribute("src", "rsrc/img/fullscreen-icon.svg");
+			document.getElementById("fullscreen-button").setAttribute("onmousedown", "goFullScreen();");
 		}
 
 /*  =========================================================================

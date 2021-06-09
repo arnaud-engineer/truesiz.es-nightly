@@ -363,6 +363,11 @@
 				color: gray;
 			}
 
+	#fullscreen-button img {
+		width: 30px;
+		height: 30px;
+	}
+
 
 		/*  ---------------
 			 CALIBRATION ZOOM BUTTONS
