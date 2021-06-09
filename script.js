@@ -508,6 +508,18 @@
 				}
 
 
+	/*  ----------------------------------------
+		 FULLSCREEN MODE
+		---------------------------------------- */
+
+		function goFullScreen()
+		{
+			var body = document.getElementsByTagName("body")[0];
+			//if (body.requestFullscreen) {
+				body.requestFullscreen();
+			//}
+		}
+
 /*  =========================================================================
 	 MAIN UTILITIES
 	========================================================================= */
