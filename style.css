@@ -177,7 +177,7 @@
 			overflow: visible;
 		}
 
-			#title h1
+			#title h1, #title h1 a, #title h1 a:active
 			{
 				font-size: 52px;
 				letter-spacing: -2.5px;
