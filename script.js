@@ -239,7 +239,13 @@
 			{ localStorage.clear(); }
 
 				function resetApp()
-				{ localSaveRemove(); document.location.reload(); }
+				{
+					localSaveRemove();
+					//document.location.reload();
+					builtInScreenAlreadyFound = false;
+					deviceFoundProcedure();
+					setCalibrationStatus(cScreen.calibrationStatus);
+				}
 
 		/*  ---------------
 			 STATUS
@@ -265,7 +271,12 @@
 					document.getElementById("calibrationStatus").innerHTML = cScreen.name;
 					document.getElementById("deviceName").textContent = cScreen.name;
 					document.getElementById("confirm-calibration-button").style.display = "none";
+					document.getElementById("calibrationTools").style.display = "none";
+					document.getElementById("calibration-zoom").style.display = "none";
+					//document.getElementById("calibration-button").style.display = "none";
+					document.getElementById("input-form").style.display = "block";
 					document.getElementById("instructions").innerHTML = basicInstructionMsg;
+					document.getElementById("instructions").style.display = "block";
 					localSaveEdit();
 				}
 				// SELF-CALIBRATED (highest confidence indice)
@@ -274,8 +285,15 @@
 					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/valid-icon.svg");
 					document.getElementById("calibrationStatus").innerHTML = "self-calibrated";
 					document.getElementById("confirm-calibration-button").style.display = "none";
+					document.getElementById("calibrationTools").style.display = "none";
+					document.getElementById("calibration-zoom").style.display = "none";
 					document.getElementById("reset-button").style.display = "none";
+					//document.getElementById("calibration-button").style.display = "none";
+					document.getElementById("calibration-button").textContent = "manual calibration";
+					document.getElementById("calibration-button").setAttribute("onclick","calibrationModeOn();");
+					document.getElementById("input-form").style.display = "block";
 					document.getElementById("instructions").innerHTML = basicInstructionMsg;
+					document.getElementById("instructions").style.display = "block";
 					localSaveEdit();
 				}
 				// PROBABLY SELF-CALIBRATED (doubt or possible confusion)
@@ -283,24 +301,42 @@
 					cScreen.calibrationStatus = 2;
 					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/approximation-icon-v2.svg");
 					document.getElementById("calibrationStatus").innerHTML = "probably self-calibrated";
+					document.getElementById("confirm-calibration-button").style.display = "none";
+					document.getElementById("calibrationTools").style.display = "none";
+					document.getElementById("calibration-zoom").style.display = "none";
 					document.getElementById("reset-button").style.display = "none";
+					//document.getElementById("calibration-button").style.display = "none";
+					document.getElementById("input-form").style.display = "block";
 					document.getElementById("instructions").innerHTML = warningMsg + basicInstructionMsg;
+					document.getElementById("instructions").style.display = "block";
 				}
 				// POORLY SELF-CALIBRATED (best-effort despite the lack of model detection)
 				else if (s === 1) {
 					cScreen.calibrationStatus = 1;
 					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/warning-icon.svg");
 					document.getElementById("calibrationStatus").innerHTML = "poorly self-calibrated";
+					document.getElementById("confirm-calibration-button").style.display = "none";
+					document.getElementById("calibrationTools").style.display = "none";
+					document.getElementById("calibration-zoom").style.display = "none";
 					document.getElementById("reset-button").style.display = "none";
+					//document.getElementById("calibration-button").style.display = "none";
+					document.getElementById("input-form").style.display = "block";
 					document.getElementById("instructions").innerHTML = warningMsg + basicInstructionMsg;
+					document.getElementById("instructions").style.display = "block";
 				}
 				// NOT CALIBRATED (too unsure to presume anything of complete lack of usable data)
 				else if (s === 0) {
 					cScreen.calibrationStatus = 0;
 					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/unknown-error-icon-v2.svg");
 					document.getElementById("calibrationStatus").innerHTML = "not calibrated";
+					document.getElementById("confirm-calibration-button").style.display = "none";
+					document.getElementById("calibrationTools").style.display = "none";
+					document.getElementById("calibration-zoom").style.display = "none";
 					document.getElementById("reset-button").style.display = "none";
+					//document.getElementById("calibration-button").style.display = "none";
+					document.getElementById("input-form").style.display = "block";
 					document.getElementById("instructions").innerHTML = warningMsg + basicInstructionMsg;
+					document.getElementById("instructions").style.display = "block";
 				}
 				// MANUAL CALIBRATING NOW
 				else if (s === -1) {
