@@ -363,10 +363,24 @@
 				color: gray;
 			}
 
+	#fullscreen-button {
+		transform: scale(1);
+		transition: all .2s ease;
+		cursor: pointer;
+	}
+
+	#fullscreen-button:hover
+	{
+		transform: scale(1.02);
+		opacity: .8;
+	}
+
 	#fullscreen-button img {
 		width: 30px;
 		height: 30px;
 	}
+
+
 
 
 		/*  ---------------
@@ -600,13 +614,18 @@
 			.full-input input:hover::placeholder { opacity: 1; }
 		.full-input label { color: gainsboro; }
 
+		#fullscreen-button img { filter: invert(100%); }
+
 		#device-info h1 { color: white; }
 		#device-info div { color: gainsboro; }
 
 		#calibrationBox #calibrationStatus { color: white; }
 		#calibrationBox #calibrationButtons button { color: gainsboro; }
 
+
 		/*
+		filter: invert(27%)
+
 		Gainsboro
 		WhiteSmoke
 		White
