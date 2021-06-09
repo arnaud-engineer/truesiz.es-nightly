@@ -1,6 +1,6 @@
 {
     "name": "truesiz.es",
-    "short_name": "truesiz.es",
+    "display": "standalone",
     "icons": [
         {
             "src": "\/android-icon-192x192.png",
@@ -9,6 +9,5 @@
         },
     ],
     "theme_color": "#ffffff",
-    "background_color": "#ffffff",
-    "display": "standalone"
+    "background_color": "#ffffff"
 }

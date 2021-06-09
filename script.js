@@ -639,6 +639,21 @@
 	document.addEventListener('DOMContentLoaded', function(event)
 	{
 		/*  ----------------------------------------
+			 CHECK IF PWA
+			---------------------------------------- */
+
+			// https://web.dev/get-installed-related-apps/#use
+
+			/*
+			var isPWA = false;
+			const relatedApps = await navigator.getInstalledRelatedApps();
+			relatedApps.forEach((app) => {
+				isPWA = true;
+			});
+			*/
+
+
+		/*  ----------------------------------------
 			 CANVAS FRAME
 			---------------------------------------- */
 
