@@ -555,7 +555,7 @@
 		 MD
 		---------------------------------------- */
 
-	@media (max-width: 1200px) {
+	@media (max-width: 1200px), (max-height: 900px) {
 		#frame-1, #frame-2, #frame-3, #frame-4
 		{ transform: scale(.65); }
 	}
@@ -564,7 +564,7 @@
 		 SM
 		---------------------------------------- */
 
-	@media (max-width: 992px) {
+	@media (max-width: 992px), (max-height: 700px) {
 		#frame-1, #frame-2, #frame-3, #frame-4
 		{ transform: scale(.5); }
 
@@ -582,7 +582,7 @@
 		 XS
 		---------------------------------------- */
 
-	@media (max-width: 768px) {
+	@media (max-width: 768px), (max-height: 500px) {
 		#frame-1, #frame-2, #frame-3, #frame-4
 		{ transform: scale(.35); }
 
