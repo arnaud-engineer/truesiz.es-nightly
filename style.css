@@ -659,7 +659,7 @@
 		.dark .full-input input:hover::placeholder { opacity: 1; }
 	.dark .full-input label { color: gainsboro; }
 
-	.dark #fullscreen-button img, #app-settings-button img { filter: invert(100%); }
+	.dark #fullscreen-button img, .dark #app-settings-button img { filter: invert(100%); }
 
 	.dark #device-info h1 { color: white; }
 	.dark #device-info div { color: gainsboro; }
