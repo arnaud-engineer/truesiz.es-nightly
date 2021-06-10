@@ -25,9 +25,9 @@
 
 		body { z-index: 1; }
 		main { z-index: 7; }
-		#background canvas { z-index: 9; }
+		#background canvas { z-index: 8; }
 		#title { z-index: 11; }
-		#square { z-index: 8; }
+		#square { z-index: 9; }
 
 /*  =========================================================================
 	 BODY
@@ -369,19 +369,25 @@
 				color: gray;
 			}
 
-	#fullscreen-button {
+	#fullscreen-button, #app-settings-button {
+		display: inline-block;
+		margin: 2px;
+
 		transform: scale(1);
 		transition: all .2s ease;
 		cursor: pointer;
 	}
 
-	#fullscreen-button:hover
+	#fullscreen-button:hover, #app-settings-button:hover
 	{
 		transform: scale(1.02);
 		opacity: .8;
 	}
 
-	#fullscreen-button img {
+		/*#app-settings-button:hover img
+		{ transform: rotate(90deg); }*/
+
+	#fullscreen-button img, #app-settings-button img {
 		width: 30px;
 		height: 30px;
 	}
@@ -620,7 +626,7 @@
 			.full-input input:hover::placeholder { opacity: 1; }
 		.full-input label { color: gainsboro; }
 
-		#fullscreen-button img { filter: invert(100%); }
+		#fullscreen-button img, #app-settings-button img { filter: invert(100%); }
 
 		#device-info h1 { color: white; }
 		#device-info div { color: gainsboro; }

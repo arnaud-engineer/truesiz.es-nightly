@@ -645,10 +645,11 @@
 			 CHECK IF PWA
 			---------------------------------------- */
 
-			if (window.matchMedia('(display-mode: standalone)').matches) {
+			/* does'nt work */
+			/*if (window.matchMedia('(display-mode: standalone)').matches) {
 				console.log("This is running as standalone.");
 				goFullScreen();
-			}
+			}*/
 
 
 		/*  ----------------------------------------
