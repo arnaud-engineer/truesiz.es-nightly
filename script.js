@@ -324,7 +324,7 @@
 
 				function resetApp()
 				{
-					localSaveRemove();
+					resetAppData()
 					document.location.reload();
 				}
 
