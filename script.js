@@ -576,6 +576,32 @@
 			fullscreenStatus = false;
 		}
 
+	/*  ----------------------------------------
+		 USER PREFERENCES
+		---------------------------------------- */
+
+		function goUserPreferences()
+		{
+			document.getElementById("instructions").style.display = "none";
+			document.getElementById("userPreferences").style.display = "block";
+
+			document.getElementById("square").style.width = "min(100vw - 60px, 70vw)";
+			document.getElementById("square").style.height = "min(100vh - 60px, 70vh)";
+
+			document.getElementById("app-settings-button").setAttribute("onmousedown", "endUserPreferences();");
+		}
+
+		function endUserPreferences()
+		{
+			document.getElementById("instructions").style.display = "block";
+			document.getElementById("userPreferences").style.display = "none";
+
+			changeCalibrationObject(); // load the last calibration in case no size has been entred by the user
+			reloadSquare(); // load the last entry
+
+			document.getElementById("app-settings-button").setAttribute("onmousedown", "goUserPreferences();");
+		}
+
 /*  =========================================================================
 	 MAIN UTILITIES
 	========================================================================= */

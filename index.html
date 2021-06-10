@@ -69,6 +69,16 @@
 						<p>fit the frame with the object by scrolling (or use the - / + buttons)</p>
 					</div>
 				</div>
+				<div id="userPreferences">
+					<div>
+						<h1>Display</h1>
+						<p>Dark Mode</p>
+						<p>Preferred Unit</p>
+					</div>
+					<div>
+						
+					</div>
+				</div>
 
 			</div>
 		</main>
@@ -99,7 +109,7 @@
 					<div class="full-input"><label>height</label><input id="yVal" onkeyup="changeY(this);" oninput="changeY(this);" type="number" required name="y" min="0" step=".1" autocomplete="off" placeholder="10.0"></div>
 					<div>
 						<span id="fullscreen-button" onmousedown="goFullScreen();"><img src="rsrc/img/fullscreen-icon.svg"/></span> 
-						<span id="app-settings-button" onmousedown="goFullScreen();"><img src="rsrc/img/app-settings-icon.svg"/></span>
+						<span id="app-settings-button" onmousedown="goUserPreferences();"><img src="rsrc/img/app-settings-icon.svg"/></span>
 					</div>
 				</form>
 			</div>

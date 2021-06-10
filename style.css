@@ -156,7 +156,7 @@
 		}
 
 		/* HIDE CALIBRATION TOOLS AT APP LAUNCH */
-		#calibrationTools
+		#calibrationTools, #userPreferences
 		{ display: none; }
 
 
