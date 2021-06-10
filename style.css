@@ -105,7 +105,35 @@
 		/* SHAPE */
 		width: 700px; height: 400px; /* usefull only if app failure */
 		border-radius: 4px;
+
+		position: relative;
 	}
+
+		img#graduations
+		{
+			position: absolute;
+			top:0; left: 0;
+			margin: 0; padding: 0;
+			width: 20000px;
+			/*height: 30px;*/
+
+			display: block;
+
+			filter: invert(100%);
+		}
+
+		img#graduations-portrait
+		{
+			position: absolute;
+			top: 0; left: 0;
+			margin: 0; padding: 0;
+			height: 20000px;
+			/*height: 30px;*/
+
+			display: block;
+
+			filter: invert(100%);
+		}
 
 		/* FORCE CONTENT TO BE FLEX */
 		#square *, #square * * {

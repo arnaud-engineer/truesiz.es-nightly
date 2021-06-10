@@ -941,6 +941,10 @@
 					}
 				}
 			}, 300);
+
+			document.getElementById("graduations").style.width = realCm(500);
+			document.getElementById("graduations-portrait").style.height = realCm(500);
+			document.getElementById("graduations-portrait").style.top = realCm(-.05); // awfull dirty fix
 	});
 
 
