@@ -192,7 +192,15 @@
 				}
 
 				a.themeButton img
-				{ margin-bottom:10px !important; }
+				{
+					margin-bottom:10px !important;
+				}
+
+				a.themeButton span
+				{
+					display: inline-block;
+					width: 60px;
+				}
 
 
 /*  =========================================================================
