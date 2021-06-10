@@ -122,6 +122,8 @@
 			letter-spacing: -.9px;
 
 			max-width: 300px;
+
+			margin-bottom: 16px;
 		}
 
 			#square h1:last-child {
@@ -142,6 +144,9 @@
 			flex-direction: row;
 		}
 
+			#square p *, #square p * *
+			{ display: inline-block; }
+
 			#square p:last-child {
 				margin-bottom: 0px;
 			}
@@ -158,6 +163,36 @@
 		/* HIDE CALIBRATION TOOLS AT APP LAUNCH */
 		#calibrationTools, #userPreferences
 		{ display: none; }
+
+			#userPreferences *
+			{ max-width: 100% !important; }
+
+			#userPreferences button
+			{ width: 100%; }
+
+			a.themeButton
+			{
+				display:inline-block;
+				margin:10px !important;
+				cursor: pointer;
+
+				opacity: .6;
+
+				transition: all .2s ease-out;
+			}
+
+				a.themeButton.selected {
+					opacity: 1;
+				}
+
+				a.themeButton:hover
+				{
+					transform: scale(1.02);
+					opacity: .9;
+				}
+
+				a.themeButton img
+				{ margin-bottom:10px !important; }
 
 
 /*  =========================================================================
@@ -611,29 +646,26 @@
 
 	/* TODO : DIRTY VERSION, MAKE IT BEAUTIFUL + CANVAS ADAPTATION + SHADOWS ? */
 
-	@media (prefers-color-scheme: dark)
-	{
-		canvas { opacity: .35; }
+	.dark canvas { opacity: .35; }
 
-		main { background-color: black; }
-		#title h2 { color: gainsboro; }
-		#credits { color: gainsboro; }
-		#credits img { color: white; }
-		#credits a { color: white; }
+	.dark main { background-color: black; }
+	.dark #title h2 { color: gainsboro; }
+	.dark #credits { color: gainsboro; }
+	.dark #credits img { color: white; }
+	.dark #credits a { color: white; }
 
-		.full-input input { color: white; }
-			.full-input input::placeholder { color: white !important; opacity: .5; }
-			.full-input input:hover::placeholder { opacity: 1; }
-		.full-input label { color: gainsboro; }
+	.dark .full-input input { color: white; }
+		.dark .full-input input::placeholder { color: white !important; opacity: .5; }
+		.dark .full-input input:hover::placeholder { opacity: 1; }
+	.dark .full-input label { color: gainsboro; }
 
-		#fullscreen-button img, #app-settings-button img { filter: invert(100%); }
+	.dark #fullscreen-button img, #app-settings-button img { filter: invert(100%); }
 
-		#device-info h1 { color: white; }
-		#device-info div { color: gainsboro; }
+	.dark #device-info h1 { color: white; }
+	.dark #device-info div { color: gainsboro; }
 
-		#calibrationBox #calibrationStatus { color: white; }
-		#calibrationBox #calibrationButtons button { color: gainsboro; }
-	}
+	.dark #calibrationBox #calibrationStatus { color: white; }
+	.dark #calibrationBox #calibrationButtons button { color: gainsboro; }
 
 
 

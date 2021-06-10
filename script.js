@@ -9,8 +9,22 @@
 		var builtInScreenAlreadyFound = false;
 
 		// Fullscreen
-		var fullscreenAvailable = true;
-		var fullscreenStatus = false;
+		var fullscreenAvailable = true; // useless unless we want to prevent display useless buttons on pwa
+
+	/*  ----------------------------------------
+		 APP PREFERENCES
+		---------------------------------------- */
+
+		class AppPreferences
+		{
+			constructor() {
+				this.preferredUnit = "cm";
+				this.theme = "auto";
+				this.fullscreenStatus = false;
+			}
+		}
+
+		var app = new AppPreferences();
 
 	/*  ----------------------------------------
 		 SCREEN
@@ -180,19 +194,42 @@
 				for(i=0 ; i<localStorage.length; i++) {
 					var key = localStorage.key(i);
 					var value = JSON.parse(localStorage[key]);
-					console.log("SAVE EDIT : " + key + " => " + value.name);
-					// TODO : SEEMS UNABLE TO DETECT ROTATED SCREEN
-					if(value.wRes == cScreen.wRes || value.hRes == cScreen.hRes)
+					if(key.includes("screen"))
 					{
-						localStorage.setItem(key, JSON.stringify(cScreen));
-						currentScreenIsNew = false;
+						console.log("SAVE EDIT : " + key + " => " + value.name);
+						// TODO : SEEMS UNABLE TO DETECT ROTATED SCREEN
+						if(value.wRes == cScreen.wRes || value.hRes == cScreen.hRes)
+						{
+							localStorage.setItem(key, JSON.stringify(cScreen));
+							currentScreenIsNew = false;
+						}
 					}
 				}
 				if (currentScreenIsNew === true)
 				{
 					localStorage.setItem("screen " + i, JSON.stringify(cScreen));
 				}
+				updateScreenDisplay();
 			}
+
+				function appSaveEdit()
+				{
+					var i;
+					var hasAppData = false;
+					for(i=0 ; i<localStorage.length; i++) {
+						var key = localStorage.key(i);
+						var value = JSON.parse(localStorage[key]);
+						if(key.includes("appData"))
+						{
+							hasAppData = true;
+							console.log("SAVE EDIT : " + key + " => " + value.name);
+							localStorage.setItem(key, JSON.stringify(app));
+						}
+					}
+					if(hasAppData === false) {
+						localStorage.setItem("appData", JSON.stringify(app));
+					}
+				}
 
 			function localSaveRead()
 			{
@@ -201,31 +238,34 @@
 				for(i=0 ; i<localStorage.length; i++) {
 					var key = localStorage.key(i);
 					var value = JSON.parse(localStorage[key]);
-					console.log("SAVE READ : " + key + " => " + value.name);
-					if (value.builtIn === true)
-						builtInScreenAlreadyFound = true;
-					// TODO : SEEMS UNABLE TO DETECT ROTATED SCREEN
-					if( (value.wRes == cScreen.wRes || value.hRes == cScreen.wRes) && (value.wRes == cScreen.hRes || value.hRes == cScreen.hRes))
+					if(key.includes("screen"))
 					{
-						currentScreenIsNew = false;
-						// INJECT THE CALIBRATION DATA IN THE APP
-						try {
-							cScreen.name = value.name;
-							cScreen.deviceFamily = value.deviceFamily;
-							cScreen.diagonal = value.diagonal;
-							cScreen.dpi = value.dpi;
-							cScreen.builtIn = value.builtIn;
-							cScreen.dppx = value.dppx;
-							cScreen.wRes = value.wRes;
-							cScreen.hRes = value.hRes;
-							cScreen.preferredUnit = value.preferredUnit;
-							cScreen.preferredCalibrationObject = value.preferredCalibrationObject;
-							cScreen.confirmedCalibration = value.confirmedCalibration;
-							cScreen.calibrationStatus = value.calibrationStatus;
-							return 1;
-						}
-						catch(e) {
-							return -1;
+						console.log("SAVE READ : " + key + " => " + value.name);
+						if (value.builtIn === true)
+							builtInScreenAlreadyFound = true;
+						// TODO : SEEMS UNABLE TO DETECT ROTATED SCREEN
+						if( (value.wRes == cScreen.wRes || value.hRes == cScreen.wRes) && (value.wRes == cScreen.hRes || value.hRes == cScreen.hRes))
+						{
+							currentScreenIsNew = false;
+							// INJECT THE CALIBRATION DATA IN THE APP
+							try {
+								cScreen.name = value.name;
+								cScreen.deviceFamily = value.deviceFamily;
+								cScreen.diagonal = value.diagonal;
+								cScreen.dpi = value.dpi;
+								cScreen.builtIn = value.builtIn;
+								cScreen.dppx = value.dppx;
+								cScreen.wRes = value.wRes;
+								cScreen.hRes = value.hRes;
+								cScreen.preferredUnit = value.preferredUnit;
+								cScreen.preferredCalibrationObject = value.preferredCalibrationObject;
+								cScreen.confirmedCalibration = value.confirmedCalibration;
+								cScreen.calibrationStatus = value.calibrationStatus;
+								return 1;
+							}
+							catch(e) {
+								return -1;
+							}
 						}
 					}
 				}
@@ -233,18 +273,59 @@
 				{
 					return -1;
 				}
+				updateScreenDisplay();
 			}
 
-			function localSaveRemove()
-			{ localStorage.clear(); }
+				function appSaveRead()
+				{
+					var i;
+					for(i=0 ; i<localStorage.length; i++) {
+						var key = localStorage.key(i);
+						var value = JSON.parse(localStorage[key]);
+						if(key.includes("appData"))
+						{
+							// INJECT THE CALIBRATION DATA IN THE APP
+							try {
+								app.preferredUnit = value.preferredUnit;
+								app.theme = value.theme;
+								app.fullscreenStatus = value.fullscreenStatus;
+								return 1;
+							}
+							catch(e) {
+								return -1;
+							}
+						}
+					}
+				}
 
-				function resetApp()
+			function localSaveRemove()
+			{
+				for(i=0 ; i<localStorage.length; i++) {
+					var key = localStorage.key(i);
+					if(key.includes("screen"))
+						localStorage.removeItem(key);
+				}
+			}
+
+
+				function resetCalibration()
 				{
 					localSaveRemove();
 					//document.location.reload();
 					builtInScreenAlreadyFound = false;
 					deviceFoundProcedure();
 					setCalibrationStatus(cScreen.calibrationStatus);
+					updateScreenDisplay();
+					document.getElementById("userPreferences").style.display = "none";
+				}
+
+			function resetAppData()
+			{ localStorage.clear(); }
+
+				function resetApp()
+				{
+					localSaveRemove();
+					document.location.reload();
 				}
 
 		/*  ---------------
@@ -557,7 +638,7 @@
 
 		function goFullScreen()
 		{
-			fullscreenStatus = true;
+			app.fullscreenStatus = true;
 			// Go fullscreen
 			var body = document.getElementsByTagName("body")[0];
 			body.requestFullscreen();
@@ -573,34 +654,153 @@
 			// End fullscreen button evolves into fullscreen button
 			document.getElementById("fullscreen-button").getElementsByTagName("img")[0].setAttribute("src", "rsrc/img/fullscreen-icon.svg");
 			document.getElementById("fullscreen-button").setAttribute("onmousedown", "goFullScreen();");
-			fullscreenStatus = false;
+			app.fullscreenStatus = false;
 		}
 
 	/*  ----------------------------------------
 		 USER PREFERENCES
 		---------------------------------------- */
 
-		function goUserPreferences()
-		{
-			document.getElementById("instructions").style.display = "none";
-			document.getElementById("userPreferences").style.display = "block";
+		/*  ---------------
+			 ON / OFF 
+			--------------- */
 
-			document.getElementById("square").style.width = "min(100vw - 60px, 70vw)";
-			document.getElementById("square").style.height = "min(100vh - 60px, 70vh)";
+			function goUserPreferences()
+			{
+				document.getElementById("instructions").style.display = "none";
+				document.getElementById("userPreferences").style.display = "block";
 
-			document.getElementById("app-settings-button").setAttribute("onmousedown", "endUserPreferences();");
-		}
+				document.getElementById("square").style.width = "min(100vw - 60px, 70vw, 600px)";
+				document.getElementById("square").style.height = "min(100vh - 60px, 70vh, 600px)";
 
-		function endUserPreferences()
-		{
-			document.getElementById("instructions").style.display = "block";
-			document.getElementById("userPreferences").style.display = "none";
+				document.getElementById("app-settings-button").setAttribute("onmousedown", "endUserPreferences();");
+			}
 
-			changeCalibrationObject(); // load the last calibration in case no size has been entred by the user
-			reloadSquare(); // load the last entry
+			function endUserPreferences()
+			{
+				document.getElementById("instructions").style.display = "block";
+				document.getElementById("userPreferences").style.display = "none";
 
-			document.getElementById("app-settings-button").setAttribute("onmousedown", "goUserPreferences();");
-		}
+				changeCalibrationObject(); // load the last calibration in case no size has been entred by the user
+				reloadSquare(); // load the last entry
+
+				document.getElementById("app-settings-button").setAttribute("onmousedown", "goUserPreferences();");
+
+				// TODO : missing instructions
+			}
+
+
+		/*  ---------------
+			 GENERATION
+			--------------- */
+
+			function generatePreference() {
+				if(appSaveRead() > 0) {
+					document.getElementById("preferredUnit").value = app.preferredUnit;
+					document.getElementById("sizeUnit").value = app.preferredUnit;
+				}
+			}
+
+		/*  ---------------
+			 DARK MODE
+			--------------- */
+
+			function setDarkMode()
+			{
+				app.theme = "dark";
+				document.getElementsByTagName("body")[0].classList.add("dark");
+
+				drawFrame();
+
+				document.getElementById("dark-mode-button").classList.add("selected");
+				document.getElementById("light-mode-button").classList.remove("selected");
+				document.getElementById("auto-mode-button").classList.remove("selected");
+
+				app.theme = "dark";
+				appSaveEdit();
+			}
+
+			function setLightMode()
+			{
+				app.theme = "light";
+				document.getElementsByTagName("body")[0].classList.remove("dark");
+
+				drawFrame();
+
+				document.getElementById("light-mode-button").classList.add("selected");
+				document.getElementById("dark-mode-button").classList.remove("selected");
+				document.getElementById("auto-mode-button").classList.remove("selected");
+
+				app.theme = "light";
+				appSaveEdit();
+			}
+
+			function setAutoMode()
+			{
+				app.theme = "auto";
+				if (window.matchMedia('(prefers-color-scheme)').media !== 'not all') {
+					console.log('Dark mode is supported');
+					if (window.matchMedia('(prefers-color-scheme: dark)').matches === true) {
+						document.getElementsByTagName("body")[0].classList.add("dark");
+						console.log('auto dark mode');
+					}
+					else {
+						document.getElementsByTagName("body")[0].classList.remove("dark");
+						console.log('auto light mode');
+					}
+				}
+
+				drawFrame();
+
+				document.getElementById("auto-mode-button").classList.add("selected");
+				document.getElementById("dark-mode-button").classList.remove("selected");
+				document.getElementById("light-mode-button").classList.remove("selected");
+
+				app.theme = "auto";
+				appSaveEdit();
+			}
+
+		/*  ---------------
+			 PREFERRED UNIT
+			--------------- */
+
+			function setPreferredUnit()
+			{
+				let sUnit = document.getElementById("preferredUnit").value;
+				if(sUnit === "cm")
+					app.preferredUnit = "cm";
+				else if(sUnit === "inches")
+					app.preferredUnit = "inches";
+				else
+					console.log("ERROR : unknown size unit (not cm, not inches)");
+				document.getElementById("sizeUnit").value = app.preferredUnit;
+				cScreen.preferredUnit = app.preferredUnit;
+				appSaveEdit();
+			}
+
+
+		/*  ---------------
+			 SCREEN LIST UPDATE
+			--------------- */
+
+			function updateScreenDisplay()
+			{
+				// <b>screen 1</b> : <span>model</span> (<span>15.4 inch.</span> - <span>1080</span> x <span>1920</span>)
+				console.log("UPDATE SCREEN LIST DISPLAY");
+				var listHTML = "";//"<p>";
+				var i;
+				for(i=0 ; i<localStorage.length; i++) {
+					var key = localStorage.key(i);
+					var value = JSON.parse(localStorage[key]);
+					if(i>0)
+						listHTML += "<br/>";
+					if(key.includes("screen")) {
+						console.log("PREF LIST : " + key + " => " + value.name);
+						listHTML += "<b>screen " + i + "</b> : " + value.name + " (" + value.diagonal.toFixed(1) + " inch. - " + value.wRes + "x" + value.hRes + ")"; 
+					}
+				}
+				document.getElementById("screen-list").innerHTML = listHTML;
+			}
 
 /*  =========================================================================
 	 MAIN UTILITIES
@@ -628,12 +828,17 @@
 	function drawFrame()
 	{
 		let canvasColor = "#2b2b2b";
-		// IF THE BROWSER SUPPORTS DARK MODE
-		if (window.matchMedia('(prefers-color-scheme)').media !== 'not all') {
-			console.log('🎉 Dark mode is supported');
-			if (window.matchMedia('(prefers-color-scheme: dark)').matches === true) {
-				canvasColor = "Gainsboro";
+		// IF THE BROWSER SUPPORTS DARK MODE AND AUTO THEME
+		if(app.theme === "auto") {
+			if (window.matchMedia('(prefers-color-scheme)').media !== 'not all') {
+				console.log('🎉 Dark mode is supported');
+				if (window.matchMedia('(prefers-color-scheme: dark)').matches === true) {
+					canvasColor = "Gainsboro";
+				}
 			}
+		}
+		else if(app.theme === "dark") {
+			canvasColor = "Gainsboro";
 		}
 
 		var canvas = document.getElementById("frame-1");
@@ -661,6 +866,20 @@
 		ctx.fillRect(150,150,-150,-12);
 	}
 
+	function loadTheme(e)
+	{
+		const darkModeOn = e.matches;
+		console.log(`Dark mode is ${darkModeOn ? '🌒 on' : '☀️ off'}.`);
+		if(darkModeOn) {
+			document.getElementsByTagName("body")[0].classList.add("dark");
+		}
+		else {
+			document.getElementsByTagName("body")[0].classList.remove("dark");
+		}
+		// Canvas drawing
+		drawFrame();
+	}
+
 /*  =========================================================================
 	 MAIN
 	========================================================================= */
@@ -678,19 +897,32 @@
 			}*/
 
 
+
+			// RETURN APP PREFERENCES
+			//appSaveRead();
+			generatePreference();
+
 		/*  ----------------------------------------
 			 CANVAS FRAME
 			---------------------------------------- */
 
-			drawFrame();
+			if(app.theme === "auto") {
+				// DARK MODE CHANGE LIVE UPDATE https://web.dev/prefers-color-scheme/
+				const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+				darkModeMediaQuery.addListener((e) => {
+					loadTheme(e);
+				});
 
-			// DARK MODE CHANGE LIVE UPDATE https://web.dev/prefers-color-scheme/
-			const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-			darkModeMediaQuery.addListener((e) => {
-				const darkModeOn = e.matches;
-				console.log(`Dark mode is ${darkModeOn ? '🌒 on' : '☀️ off'}.`);
-				drawFrame();
-			});
+				setAutoMode();
+			}
+			else if(app.theme === "dark") {
+				setDarkMode();
+			}
+			else if(app.theme === "light") {
+				setLightMode();
+			}
+
+			//drawFrame();
 
 
 		/*  ----------------------------------------
@@ -701,7 +933,7 @@
 
 			// SCREEN CHANGE LIVE DETECTION
 			setInterval(function() {
-				if(fullscreenStatus === false) {
+				if(app.fullscreenStatus === false) {
 					// IF SCREEN CHANGE (except rotations)
 					if( ( (window.screen.width * window.devicePixelRatio != cScreen.wRes && window.screen.width * window.devicePixelRatio != cScreen.hRes) || (window.screen.height * window.devicePixelRatio != cScreen.wRes && window.screen.height * window.devicePixelRatio != cScreen.hRes) ) && screen.calibrationStatus != -1) {
 						cScreen = new Screen();

@@ -71,12 +71,19 @@
 				</div>
 				<div id="userPreferences">
 					<div>
-						<h1>Display</h1>
-						<p>Dark Mode</p>
-						<p>Preferred Unit</p>
-					</div>
-					<div>
-						
+						<h1>theme</h1>
+						<p><a class="themeButton" id="auto-mode-button" onmousedown="setAutoMode();"><img src="rsrc/img/auto-dark-mode-button.svg"/> automatic <a class="themeButton" id="dark-mode-button" onmousedown="setDarkMode();"><img src="rsrc/img/dark-mode-button.svg"/> dark mode</a> <a class="themeButton" id="light-mode-button" onmousedown="setLightMode();"><img src="rsrc/img/light-mode-button.svg"/> light mode</a></a></p>
+						<h1>preferred unit</h1>
+						<p>
+							<select name="unit" id="preferredUnit" onchange="setPreferredUnit();">
+								<option value="cm">cm</option>
+								<option value="inches">inches</option>
+							</select>
+						</p>
+						<h1>calibration data</h1>
+						<p id="screen-list"><b>screen 1</b> : <span>model</span> (<span>15.4 inch.</span> - <span>1080</span> x <span>1920</span>) </p>
+						<h1>app data</h1>
+						<p><button onmousedown="resetApp();">erase all app data</button></p>
 					</div>
 				</div>
 
@@ -94,7 +101,7 @@
 					<div id="calibrationButtons">
 						<button id="confirm-calibration-button" onclick="confirmCalibration();">confirm</button>
 						<button id="calibration-button" onclick="calibrationModeOn();">manual calibration</button>
-						<button id="reset-button" onclick="resetApp();">back to self-calibration</button>
+						<button id="reset-button" onclick="resetCalibration();">back to self-calibration</button>
 					</div>
 				</div>
 			</div>
