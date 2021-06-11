@@ -21,6 +21,7 @@
 				this.preferredUnit = "cm";
 				this.theme = "auto";
 				this.fullscreenStatus = false;
+				this.showGraduations = true;
 			}
 		}
 
@@ -289,6 +290,7 @@
 								app.preferredUnit = value.preferredUnit;
 								app.theme = value.theme;
 								app.fullscreenStatus = value.fullscreenStatus;
+								app.showGraduations = value.showGraduations;
 								return 1;
 							}
 							catch(e) {
@@ -780,6 +782,36 @@
 
 
 		/*  ---------------
+			 GRADUATIONS
+			--------------- */
+
+			function removeGraduations()
+			{
+				document.getElementById("graduation-button").setAttribute("onmousedown", "addGraduations();");
+				document.getElementById("graduation-button").innerHTML = "display graduations";
+
+				document.getElementById("graduations").style.display = "none";
+				document.getElementById("graduations-portrait").style.display = "none";
+
+				app.showGraduations = false;
+				
+				appSaveEdit();
+			}
+
+			function addGraduations()
+			{
+				document.getElementById("graduation-button").setAttribute("onmousedown", "removeGraduations();");
+				document.getElementById("graduation-button").innerHTML = "hide graduations";
+
+				document.getElementById("graduations").style.display = "block";
+				document.getElementById("graduations-portrait").style.display = "block";
+
+				app.showGraduations = true;
+				
+				appSaveEdit();
+			}
+
+		/*  ---------------
 			 SCREEN LIST UPDATE
 			--------------- */
 
@@ -942,9 +974,14 @@
 				}
 			}, 300);
 
-			document.getElementById("graduations").style.width = realCm(500);
-			document.getElementById("graduations-portrait").style.height = realCm(500);
-			document.getElementById("graduations-portrait").style.top = realCm(-.05); // awfull dirty fix
+			if(app.showGraduations) {
+				document.getElementById("graduations").style.width = realCm(500);
+				document.getElementById("graduations-portrait").style.height = realCm(500);
+				document.getElementById("graduations-portrait").style.top = realCm(-.05); // awfull dirty fix
+			}
+			else {
+				removeGraduations();
+			}
 	});
 
 
