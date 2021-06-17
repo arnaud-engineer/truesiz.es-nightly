@@ -517,6 +517,7 @@
 					// Update calibration data
 					document.getElementById("deviceScreenSize").textContent = cScreen.diagonal.toFixed(1) + " inch.";
 				}
+				updateGraduations();
 			}
 
 			function changeResolutionOnKeyPress(event)
@@ -538,6 +539,7 @@
 					// Update calibration data
 					document.getElementById("deviceScreenSize").textContent = cScreen.diagonal.toFixed(1) + " inch.";
 				}
+				updateGraduations();
 			}
 
 			function changeResolutionOnButton(event)
@@ -557,6 +559,7 @@
 					// Update calibration data
 					document.getElementById("deviceScreenSize").textContent = cScreen.diagonal.toFixed(1) + " inch.";
 				}
+				updateGraduations();
 			}
 
 
@@ -574,6 +577,8 @@
 				document.getElementById("deviceScreenSize").textContent = cScreen.diagonal + " inch.";
 				// Turn off calibration mode
 				calibrationModeOff();
+				// 
+				updateGraduations();
 			}
 
 
