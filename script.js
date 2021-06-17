@@ -594,6 +594,8 @@
 					cScreen.preferredUnit = "inches";
 				else
 					console.log("ERROR : unknown size unit (not cm, not inches)");
+				updateGraduations();
+
 			}
 
 		/*  ---------------
@@ -778,6 +780,7 @@
 				document.getElementById("sizeUnit").value = app.preferredUnit;
 				cScreen.preferredUnit = app.preferredUnit;
 				appSaveEdit();
+				updateGraduations();
 			}
 
 
@@ -787,26 +790,24 @@
 
 			function removeGraduations()
 			{
-				document.getElementById("graduation-button").setAttribute("onmousedown", "addGraduations();");
-				document.getElementById("graduation-button").innerHTML = "display graduations";
-
-				document.getElementById("graduations").style.display = "none";
-				document.getElementById("graduations-portrait").style.display = "none";
+				/*document.getElementById("graduation-button").setAttribute("onmousedown", "addGraduations();");
+				document.getElementById("graduation-button").innerHTML = "display graduations";*/
 
 				app.showGraduations = false;
+
+				updateGraduations();
 				
 				appSaveEdit();
 			}
 
 			function addGraduations()
 			{
-				document.getElementById("graduation-button").setAttribute("onmousedown", "removeGraduations();");
-				document.getElementById("graduation-button").innerHTML = "hide graduations";
-
-				document.getElementById("graduations").style.display = "block";
-				document.getElementById("graduations-portrait").style.display = "block";
+				/*document.getElementById("graduation-button").setAttribute("onmousedown", "removeGraduations();");
+				document.getElementById("graduation-button").innerHTML = "hide graduations";*/
 
 				app.showGraduations = true;
+
+				updateGraduations();
 				
 				appSaveEdit();
 			}
@@ -912,6 +913,37 @@
 		drawFrame();
 	}
 
+	function updateGraduations()
+	{
+		if(app.showGraduations) {
+			// Add graduations button
+			document.getElementById("graduation-button").setAttribute("onmousedown", "removeGraduations();");
+			document.getElementById("graduation-button").innerHTML = "hide graduations";
+			// Display graduations depending on the unit
+			if(cScreen.preferredUnit === "cm") {
+				document.getElementById("graduations").style.width = realCm(500);
+				document.getElementById("graduations-portrait").style.height = realCm(500);
+				document.getElementById("graduations-inch").style.width = 0;
+				document.getElementById("graduations-portrait-inch").style.height = 0;
+			}
+			else if (cScreen.preferredUnit === "inches") {
+				document.getElementById("graduations-inch").style.width = realInch(500);
+				document.getElementById("graduations-portrait-inch").style.height = realInch(500);
+				document.getElementById("graduations").style.width = 0;
+				document.getElementById("graduations-portrait").style.height = 0;
+			}
+		}
+		else {
+			// Add graduation button
+			document.getElementById("graduation-button").setAttribute("onmousedown", "addGraduations();");
+			document.getElementById("graduation-button").innerHTML = "display graduations";
+			document.getElementById("graduations").style.width = 0;
+			document.getElementById("graduations-portrait").style.height = 0;
+			document.getElementById("graduations-inch").style.width = 0;
+			document.getElementById("graduations-portrait-inch").style.height = 0;
+		}
+	}
+
 /*  =========================================================================
 	 MAIN
 	========================================================================= */
@@ -974,14 +1006,7 @@
 				}
 			}, 300);
 
-			if(app.showGraduations) {
-				document.getElementById("graduations").style.width = realCm(500);
-				document.getElementById("graduations-portrait").style.height = realCm(500);
-				document.getElementById("graduations-portrait").style.top = realCm(-.05); // awfull dirty fix
-			}
-			else {
-				removeGraduations();
-			}
+			updateGraduations();
 	});
 
 
