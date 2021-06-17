@@ -1006,6 +1006,12 @@
 				}
 			}, 300);
 
+
+
+
+			// SVG loading
+			//preserveAspectRatio="xMinYMin meet" -> required in the graduations svg, add manually after illustrator export
+			//
 			updateGraduations();
 	});
 

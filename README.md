@@ -8,7 +8,7 @@ truesiz.es
 Its main strengths are :
 - **self-calibration utilities** (with device identification, and when impossible at least device type identification)
 - **manual calibration** with 2 modes : by screen size entry or by fitting a frame with an usual object, like a credit card (manual calibration is of course automatically saved)
-- **multiscreen support** with automatic screen change detection and already calibrated screen detection.
+- **multiscreen support** with automatic screen change detection, already calibrated screen detection and screen rotation detection
 - **mobile compatibility** (installable as a Progressive Web App, with a responsive interface)
 - plenty of practical functions : **graduations**, **fullscreen mode**, **light/dark mode**
 
