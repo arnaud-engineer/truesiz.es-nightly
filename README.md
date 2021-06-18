@@ -17,7 +17,7 @@ Its main strengths are :
 ## Distributions
 
 [truesiz.es](https://truesiz.es) is available under two distributions :
-- [truesiz.es](https://github.com/arnaud-engineer/truesiz.es-nightly) : last stable version (available at [truesiz.es](https://truesiz.es))
+- [truesiz.es](https://github.com/arnaud-engineer/truesiz.es) : last stable version (available at [truesiz.es](https://truesiz.es))
 - [truesiz.es nightly](https://github.com/arnaud-engineer/truesiz.es-nightly) : last dev versions, probably broken, but with the very last functionnalities (available at [dev.truesiz.es](https://dev.truesiz.es))
 
 ## Usage

@@ -39,7 +39,7 @@
 				this.deviceFamily = "";
 				// Screen data
 				this.diagonal = null;
-				this.dpi = "";
+				this.ppi = "";
 				this.builtIn = false;
 				// Resolution data
 				this.dppx = window.devicePixelRatio;
@@ -101,19 +101,19 @@
 	========================================================================= */
 
 	/*  ----------------------------------------
-		 DPI CALCULATION
+		 PPI CALCULATION
 		---------------------------------------- */
 
-		function dpiCalculation()
+		function ppiCalculation()
 		{
 			let diagonalInPixels = Math.sqrt(Math.pow(cScreen.hRes, 2) + Math.pow(cScreen.wRes, 2)); // Pythagoras
 			let wResInches = cScreen.wRes * cScreen.diagonal / diagonalInPixels;// cross-multiplication
-			let dpi = cScreen.wRes / wResInches;
-			return dpi;
+			let ppi = cScreen.wRes / wResInches;
+			return ppi;
 		}
 
-		function dpcmCalculation()
-		{ return 0.3937008 * dpiCalculation(); }
+		function ppcmCalculation()
+		{ return 0.3937008 * ppiCalculation(); }
 
 
 	/*  ----------------------------------------
@@ -121,10 +121,10 @@
 		---------------------------------------- */
 
 		function realInch(x=1)
-		{ return x * dpiCalculation() / cScreen.dppx + "px"; }
+		{ return x * ppiCalculation() / cScreen.dppx + "px"; }
 
 		function realCm(x=1)
-		{ return x * dpcmCalculation() / cScreen.dppx + "px"; }
+		{ return x * ppcmCalculation() / cScreen.dppx + "px"; }
 
 
 /*  =========================================================================
@@ -174,7 +174,7 @@
 					// INTERFACE DATA UPDATE
 					cScreen.name = detectedScreen.name;
 					cScreen.diagonal = detectedScreen.screenSize;
-					cScreen.dpi = detectedScreen.dpi;
+					cScreen.ppi = detectedScreen.ppi;
 					cScreen.builtIn = detectedScreen.builtIn;
 					setCalibrationStatus(detectedScreen.confidence);
 				}
@@ -253,7 +253,7 @@
 								cScreen.name = value.name;
 								cScreen.deviceFamily = value.deviceFamily;
 								cScreen.diagonal = value.diagonal;
-								cScreen.dpi = value.dpi;
+								cScreen.ppi = value.ppi;
 								cScreen.builtIn = value.builtIn;
 								cScreen.dppx = value.dppx;
 								cScreen.wRes = value.wRes;
