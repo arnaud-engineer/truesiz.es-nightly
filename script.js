@@ -198,8 +198,8 @@
 					if(key.includes("screen"))
 					{
 						console.log("SAVE EDIT : " + key + " => " + value.name);
-						// TODO : SEEMS UNABLE TO DETECT ROTATED SCREEN
-						if(value.wRes == cScreen.wRes || value.hRes == cScreen.hRes)
+						// TODO : TEST IF ABLE TO DETECT ROTATED SCREEN
+						if( (value.wRes == cScreen.wRes || value.hRes == cScreen.wRes) && (value.wRes == cScreen.hRes || value.hRes == cScreen.hRes))
 						{
 							localStorage.setItem(key, JSON.stringify(cScreen));
 							currentScreenIsNew = false;
@@ -244,7 +244,7 @@
 						console.log("SAVE READ : " + key + " => " + value.name);
 						if (value.builtIn === true)
 							builtInScreenAlreadyFound = true;
-						// TODO : SEEMS UNABLE TO DETECT ROTATED SCREEN
+						// TODO : TEST IF ABLE TO DETECT ROTATED SCREEN
 						if( (value.wRes == cScreen.wRes || value.hRes == cScreen.wRes) && (value.wRes == cScreen.hRes || value.hRes == cScreen.hRes))
 						{
 							currentScreenIsNew = false;
@@ -433,7 +433,7 @@
 					document.getElementById("reset-button").style.display = "block";
 					document.getElementById("instructions").innerHTML = basicInstructionMsg;
 				}
-				localSaveEdit(); // TODO : usefull ?
+				localSaveEdit();
 			}
 
 		/*  ---------------
@@ -535,7 +535,7 @@
 					// apply new diagonal
 					cScreen.diagonal = newdiagonal;
 					// update the frame size
-					changeCalibrationObject(); // TODO : do not rotate
+					changeCalibrationObject();
 					// Update calibration data
 					document.getElementById("deviceScreenSize").textContent = cScreen.diagonal.toFixed(1) + " inch.";
 				}
@@ -699,8 +699,6 @@
 				reloadSquare(); // load the last entry
 
 				document.getElementById("app-settings-button").setAttribute("onmousedown", "goUserPreferences();");
-
-				// TODO : missing instructions
 
 				// unlock inputs
 				document.getElementById("yVal").removeAttribute("disabled");

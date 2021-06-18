@@ -695,8 +695,6 @@
 	 AUTO-SCALING (RESPONSIVE)
 	========================================================================= */
 
-	/* TODO : DIRTY VERSION, MAKE IT BEAUTIFUL + CANVAS ADAPTATION + SHADOWS ? */
-
 	.dark canvas { opacity: .35; }
 
 	.dark main { background-color: black; }
