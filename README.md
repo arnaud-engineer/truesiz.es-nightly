@@ -27,7 +27,7 @@ As an user, you can simply go on [truesiz.es](https://truesiz.es). If you want y
 ## Technical Stack
 
 This PWA mainly uses Vanilla JS, HTML and CSS. It only has 2 JS librairies dependencies, included in the sources (`/lib`) :
-- device-detection : it allows to detect device/device type and return various datas such as name, screen size, … This library has been especially crafted for [truesiz.es](https://truesiz.es).
+- [device-data-detector](https://github.com/arnaud-engineer/device-data-detector) : it allows to detect device/device type and return various datas such as name, screen size, … This library has been especially crafted for [truesiz.es](https://truesiz.es).
 - [51 degress’s Renderer](https://github.com/51degrees/renderer) : a really inventive tool that allows to get around Apple GPU obfuscation on iOS.
 
 # Contributing
