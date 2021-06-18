@@ -683,6 +683,11 @@
 				document.getElementById("square").style.height = "min(100vh - 60px, 70vh, 600px)";
 
 				document.getElementById("app-settings-button").setAttribute("onmousedown", "endUserPreferences();");
+
+				// lock inputs
+				document.getElementById("yVal").setAttribute("disabled", "true");
+				document.getElementById("xVal").setAttribute("disabled", "true");
+				document.getElementById("sizeUnit").setAttribute("disabled", "true");
 			}
 
 			function endUserPreferences()
@@ -696,6 +701,11 @@
 				document.getElementById("app-settings-button").setAttribute("onmousedown", "goUserPreferences();");
 
 				// TODO : missing instructions
+
+				// unlock inputs
+				document.getElementById("yVal").removeAttribute("disabled");
+				document.getElementById("xVal").removeAttribute("disabled");
+				document.getElementById("sizeUnit").removeAttribute("disabled");
 			}
 
 
@@ -992,7 +1002,6 @@
 			}
 
 			//drawFrame();
-
 
 		/*  ----------------------------------------
 			 DEVICE DETECTION

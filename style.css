@@ -156,7 +156,7 @@
 
 			max-width: 300px;
 
-			margin-bottom: 16px;
+			margin-bottom: 10px;
 		}
 
 			#square h1:last-child {
@@ -165,7 +165,7 @@
 
 		#square p
 		{
-			margin-bottom: 16px;
+			margin-bottom: 10px;
 
 			font-size: 16px;
 			font-weight: normal;
@@ -196,6 +196,16 @@
 		/* HIDE CALIBRATION TOOLS AT APP LAUNCH */
 		#calibrationTools, #userPreferences
 		{ display: none; }
+
+			#calibrationTools div
+			{ margin: 10px; }
+
+				#calibrationTools div > *
+				{ margin-bottom: 10px; }
+
+				#calibrationTools div > *:last-child
+				{ margin-bottom: 0; }
+
 
 			#userPreferences *
 			{ max-width: 100% !important; }
