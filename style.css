@@ -330,6 +330,7 @@
 				font-size: 24px;
 				font-weight: normal;
 				letter-spacing: -1.25px;
+				padding-bottom: 10px;
 			}
 
 			#credits p
@@ -341,10 +342,14 @@
 			#credits img
 			{
 				display: inline-block;
-				width: 40px;
+				height: 60px;
 				vertical-align: middle;
 				color: grey;
+
+				padding-left: 6px;
 			}
+
+				.dark #credits img { filter: invert(100%); }
 
 			#credits a
 			{
