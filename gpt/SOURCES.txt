@@ -1,0 +1,26 @@
+# GPT Device Data Detector: Distributed Sources
+
+This experimental laboratory is not a physically validated size detector.
+It is independent of the historical True Sizes consumer and Renderer.
+
+The preferred editable sources are distributed beside this notice:
+
+- index.html, lab.css and lab.mjs: laboratory consumer, MPL-2.0.
+- src/core.mjs and src/core.d.mts: pure contracts and declarations, MPL-2.0.
+- src/browser.mjs and src/browser.d.mts: local, requested acquisition adapter, MPL-2.0.
+- src/profile.mjs and src/profile.d.mts: explicit local profile operations, MPL-2.0.
+- LICENSE: full Mozilla Public License 2.0.
+- assets/*.svg and assets/LUCIDE-LICENSE: Lucide 1.52.0 icons, ISC and applicable Feather MIT notices.
+- manifest.json: deterministic content hashes, artifact method and validation status.
+
+These modules are distributed as readable native ESM, not minified executables
+with a private-only source link. The private GPT repository's visibility is not
+changed by this distribution. No inherited catalogue or Renderer is shipped in
+this laboratory. The original repository's MPL and Renderer notices are retained
+unchanged in its GPT fork history and checkout.
+
+No model, raw display label, technical fingerprint or calibration is sent to a
+server by this laboratory. A local profile is written only by explicit command
+to the gpt-ddd:profile:v1 key. An optional model read is initiated by its button.
+Static hosting receives ordinary page/asset requests; this statement is not a
+claim that the host has no access logs or that the user's browser is private.

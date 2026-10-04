@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <title>GPT Device Data Detector</title>
+  <link rel="icon" href="assets/ruler.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="lab.css">
+  <script type="module" src="lab.mjs"></script>
+</head>
+<body>
+  <header><h1>GPT Device Data Detector</h1><a href="https://dev.truesiz.es/">Nightly</a></header>
+  <main>
+    <div class="workbench">
+      <section class="controls" aria-label="Calibration">
+        <fieldset class="axis"><legend>Axe de mesure</legend>
+          <label><input type="radio" name="axis" value="x" checked><span>Horizontal</span></label>
+          <label><input type="radio" name="axis" value="y"><span>Vertical</span></label>
+        </fieldset>
+        <label for="reference-cm">Reference</label>
+        <div class="quantity"><input id="reference-cm" type="number" value="10" min="0.01" step="0.01" inputmode="decimal"><span>cm</span></div>
+        <label for="reference-px">Longueur affichee</label>
+        <div class="quantity"><input id="reference-px" type="number" value="200" min="1" step="0.1" inputmode="decimal"><span>px</span></div>
+        <input id="reference-slider" type="range" value="200" min="1" max="800" step="0.1" aria-label="Longueur affichee">
+        <button id="align" class="primary">Aligner la reference</button>
+        <hr>
+        <label for="requested-cm">Longueur demandee</label>
+        <div class="quantity"><input id="requested-cm" type="number" value="5" min="0.01" step="0.01" inputmode="decimal"><span>cm</span></div>
+        <div class="toolbar">
+          <button id="save" aria-label="Enregistrer le profil local" data-tooltip="Enregistrer le profil local" disabled><img src="assets/save.svg" alt=""></button>
+          <button id="restore" aria-label="Proposer le profil a reconfirmer" data-tooltip="Proposer le profil a reconfirmer"><img src="assets/rotate-ccw.svg" alt=""></button>
+          <button id="reset" aria-label="Effacer le profil GPT et les references" data-tooltip="Effacer le profil GPT et les references"><img src="assets/trash-2.svg" alt=""></button>
+        </div>
+        <p id="operation-status" role="status" class="operation-status"></p>
+      </section>
+      <section class="measurement" id="measurement" aria-label="Zone de mesure">
+        <div class="measure-row"><h2>Reference de calibration</h2><strong class="scale-status">Reference non verifiee</strong><div class="line-area" id="reference-area"><div class="measure-line" id="reference-line"></div></div><p id="reference-caption">200 px</p></div>
+        <div class="measure-row"><h2>Mesure demandee</h2><div class="line-area" id="target-area"><div class="measure-line target" id="target-line" hidden></div></div><p id="target-caption" role="status">Aucune reference</p></div>
+      </section>
+    </div>
+    <section class="context-section"><h2>Contexte</h2>
+      <dl class="context-table"><div><dt>Ecran expose</dt><dd id="screen-value">Inconnu</dd></div><div><dt>DPR</dt><dd id="dpr-value">Inconnu</dd></div><div class="model-cell"><dt>Modele</dt><dd><span id="model-value">Non demande</span><button id="read-model">Lire le modele</button></dd></div></dl>
+    </section>
+  </main>
+  <footer><strong id="reference-status">Reference non verifiee</strong><a href="SOURCES.txt">Sources MPL-2.0</a></footer>
+  <noscript><p class="noscript">JavaScript indisponible : aucune mesure active.</p></noscript>
+</body>
+</html>
