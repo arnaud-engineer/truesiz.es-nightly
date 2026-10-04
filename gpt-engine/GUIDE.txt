@@ -1,0 +1,135 @@
+# GPT Device Data Detector 0.2
+
+Experimental software implementation, not a physically qualified measuring system.
+The synchronous inherited deviceDetection() is a different API and is not used.
+
+## Entry Point
+
+Import DeviceDetector from src/detector.mjs. Load catalogue/runtime-graph.json
+from your own origin, then construct with { window, zone, elements, graph }.
+zone is the owned, non-transformed measurement container; elements includes the
+reference line and rendered object. Call start() once and dispose() on teardown.
+subscribe(callback) receives snapshots and returns an unsubscribe function.
+Do not recursively refresh from a subscriber: request rendering decisions and
+read their revision instead. The constructor acquires no optional identity or
+screen permission. Native modules require HTTP(S), not a file URL.
+
+## Identity And Declarations
+
+identify({requested:true,signal,timeoutMs}) requests UA-CH model and processes
+exact semicolon-delimited UA clauses locally. No raw UA is persisted or exposed
+in the snapshot. Missing, empty, denied, omitted, timeout and error are distinct.
+Model codes only match accepted aliases in the same namespace; the supplied
+catalogue has ZERO accepted aliases. Exact legacy UA clues are merely indicative
+and only come from the original lUserAgentDetectable consumer family. Apple GPU
+positional fields, substring/fuzzy matching and punctuation stripping are excluded.
+
+search(query,{limit}) provides bounded manual name search; selectDeclaration(id)
+records a human declaration, not an independent identification. null restores
+the unknown choice. Machine/panel branches stay separate. can-ship-with edges
+only propose panels; they do not bind the active surface. The unknown candidate
+always remains possible. No catalogue declaration supplies a scale automatically.
+The schema reserves user-model-code aliases, but this version acquires only
+ua-ch-model and exact legacy UA evidence. Reserved aliases are not matched by
+the acquisition API. Manual selection is by declaration ID, not a guessed code.
+
+## Reference And Object Rendering
+
+calibrate({axis:'x'|'y',cssLength,referenceCm,referenceKind}) establishes one
+direct CSS/cm ratio. Inputs and quotient must be positive finite. The consumer
+must ensure its reference actually fits, is visible and matches cssLength.
+referenceKind is a declaration, not a physical verification. reviewAxis(axis)
+marks a draft edit and removes that axis from usable references until aligned.
+
+decideObject({width,height,unit:'cm'|'in',rotation:0|90,capacity:{width,height}})
+reads current context and returns reference-scaled, needs-reference, abstain or
+out-of-zone. Both axes use one revision. Any failed axis suppresses both output
+dimensions; overflow never silently reduces an object. rotation=90 permutes the
+physical dimensions BEFORE per-axis conversion, not a CSS transform afterwards.
+Free rotation, nonuniform/curved/affine mapping and image/object-fit recipes are
+not qualified or implemented. graduations() computes bounded ticks separately
+for each axis and unit. Never divide reference ratios by DPR or a nominal PPI.
+
+Apply widthCss/heightCss atomically only on reference-scaled, with the returned
+revision still current. Mask the object on refusal, hidden document, invalidation
+or teardown. Do not leave a prior size visible with a new metric label. The result
+always retains physicallyValidated=false, including user-declared measurements.
+
+## Surface And Lifecycle
+
+Minimal context, position/size of zone, CSS projection, segment geometry and
+posture are inspected locally. Changes invalidate references; window resize,
+visibility/fullscreen, native screen changes and persistent pageshow force review.
+Polling runs in foreground at one-second intervals; it is not instantaneous
+protection against hostile animated CSS. Unsupported segment/posture APIs do not
+imply a plane surface. A known zone spanning segments is refused conservatively.
+
+requestScreens({requested:true,signal,timeoutMs}) alone may prompt for Window
+Management permission. It preserves unsupported/denied/timeout/error outcomes.
+No display label or serial is read, persisted or returned. Screen handles and
+screen-N values are volatile to this session. selectScreen(id) is a proposal;
+fullscreen(element) requests that handle only through an explicit UI action.
+Topology/current-screen/property changes and permission revocation force review.
+Neither currentScreen nor fullscreen certifies that the zone is on a particular
+physical panel. A same-geometry invisible panel swap can remain undetectable.
+
+The implementation uses current window.viewport.segments, not the obsolete trial
+visualViewport.segments. Primary interface references:
+https://developer.chrome.com/blog/viewport-segments-api-shipped
+https://www.w3.org/TR/window-management/
+https://www.w3.org/TR/device-posture/
+
+## Profiles And Privacy
+
+save(storage,{requested:true}), restore(storage), reset(storage,{requested:true})
+touch only gpt-ddd:profile:v1. A restored profile is needs-reconfirmation and
+contains draft references only: no current DPR, context, machine, label or revision.
+No legacy key is enumerated, migrated or deleted. Corrupt/oversized/unsupported
+profiles are refused without repair writes. Disposed instances reject new work.
+Prefixing storage is not a sandbox against another same-origin page.
+The Nightly consumer separately stores theme, unit and graduation preferences
+in gpt-truesizes:preferences:v1. These preferences contain no device or reference
+data and never restore an active measurement. Profile reset leaves them intact.
+
+## Minimal Consumer Example
+
+The reference line and rectangle must be owned DOM elements. Never reuse this
+example with arbitrary third-party transformed content or hidden references.
+
+```js
+import { DeviceDetector } from './gpt-engine/src/detector.mjs';
+const response = await fetch('./gpt-engine/catalogue/runtime-graph.json');
+if (!response.ok) throw new Error('Catalogue unavailable');
+const stage = document.getElementById('stage');
+const line = document.getElementById('reference-line');
+const rectangle = document.getElementById('object-frame');
+const detector = new DeviceDetector({ window, zone: stage,
+  elements: [line, rectangle], graph: await response.json() });
+detector.start();
+// After the human explicitly aligns a visible horizontal 200 CSS px reference:
+detector.calibrate({axis: 'x', cssLength: 200, referenceCm: 10});
+// Then, in the same context, after independently aligning the vertical axis:
+detector.calibrate({axis: 'y', cssLength: 120, referenceCm: 8});
+const result = detector.decideObject({width: 5, height: 3, unit: 'cm',
+  rotation: 0, capacity: {width: stage.clientWidth - 64, height: stage.clientHeight - 64}});
+rectangle.hidden = result.status !== 'reference-scaled';
+if (result.status === 'reference-scaled') {
+  rectangle.style.width = result.widthCss + 'px';
+  rectangle.style.height = result.heightCss + 'px';
+}
+// Real consumers must subscribe, mask stale output on invalidation and dispose
+// on teardown; this single decision is not a persistent physical guarantee.
+```
+
+## Reproduction And Limits
+
+The canonical repository contains npm test, npm run test:types, npm run build:sdk,
+and Node/browser tests. npm run import:legacy then npm run build:graph reproduces
+declarations; npm run build:sdk distributes reviewed readable sources and licenses.
+Do not run historical main.js/data.js to reconstruct the new engine.
+
+The physical protocol remains docs/design/08-physical-validation-protocol.md.
+There is no hardware sample, accepted new alias corpus, calibrated probability,
+independent centimeter control or validated surface recipe in this implementation.
+GPU/codecs/timing/battery/RAM/quota/fingerprinting and zoom transport remain deferred.
+Software completeness does not turn these research questions into established facts.

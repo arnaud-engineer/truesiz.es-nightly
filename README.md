@@ -1,3 +1,46 @@
+# True Sizes Nightly / GPT
+
+The root [Nightly application](https://dev.truesiz.es/) now consumes GPT Device
+Data Detector 0.2.0-experimental. It renders an ideal rectangle from two current,
+independent CSS/cm references, never from a guessed diagonal or nominal PPI.
+Recognition is indicative and physical accuracy is not validated.
+
+## Maintained Sources
+
+`index.html`, `app.css`, `app.mjs` are the Nightly app. `gpt-engine/` is the
+manifest-owned SDK distribution from the canonical GPT-device-data-detector
+repository, not a second source tree. Its [guide](gpt-engine/GUIDE.txt),
+[source notice](gpt-engine/SOURCES.txt), MPL license and Lucide notices are included.
+Do not hand-edit copied SDK files. The older `gpt/` lab is independently versioned
+and unchanged. The old `script.js`, styles, bundles and PWA files remain historical
+references but are no longer loaded by the root app. Existing Pages main `/`,
+CNAME and deployment configuration are unchanged. Stable True Sizes is untouched.
+
+## Preview And Verification
+
+Use Node 22+ with `node preview.mjs 8788`; open http://127.0.0.1:8788/.
+This preview allowlists tracked assets and SDK manifest entries, excluding private
+AGENTS and Git metadata. The canonical GPT checkout owns `npm test`,
+`npm run test:types`, `npm run build:sdk`, `npm run copy:nightly`,
+`npm run test:nightly` and `npm run test:nightly:adversarial`.
+Fixtures exercise software failure paths, not real multi-screen/physical length.
+Review fresh Git refs and protected copy ownership before every release.
+
+## Privacy And Limits
+
+No analytics, third-party runtime requests, GPU/battery benchmark or label/serial
+collection. Optional model and screen acquisition only run after commands.
+`gpt-ddd:profile:v1` stores draft references on explicit save; restoring requires
+reconfirmation. `gpt-truesizes:preferences:v1` stores only unit/theme/graduations.
+Profile reset touches neither preferences nor any legacy key. Same-origin storage
+prefixes are not security isolation. Known segment-spanning or transformed zones
+are refused; invisible identical-context panel swaps remain undetectable.
+
+## Historical Documentation
+
+The text below describes the previous app. Its automatic calibration, multi-screen
+recognition and PWA claims do not describe or validate this experimental engine.
+
 truesiz.es
 ==============
 

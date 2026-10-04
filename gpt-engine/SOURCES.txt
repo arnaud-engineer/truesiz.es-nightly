@@ -1,0 +1,23 @@
+# GPT Device Data Detector 0.2: Distributed Source
+
+All editable engine modules and declarations are in src/. LICENSE is MPL-2.0.
+The catalogue is an explicit, editable declaration graph derived from inherited
+data.js (also supplied). scripts/import-legacy.mjs and scripts/build-graph.mjs
+are its preferred generators. The former requires TypeScript 6.0.2 on Node 22+.
+Neither generator evaluates the inherited data.js.
+
+The original source revision is e0daafc9100dc7ae8f1d469990b6e6962a0cac20:
+https://github.com/arnaud-engineer/device-data-detector/blob/e0daafc9100dc7ae8f1d469990b6e6962a0cac20/data.js
+The actual received source SHA-256 is recorded in every graph assertion.
+Declarations and proposed edges remain legacy-unverified; aliases are empty.
+Names or nominal diagonals cannot determine the active panel or CSS/cm.
+
+assets/*.svg are Lucide 1.52.0 icons. assets/LUCIDE-LICENSE preserves the ISC and
+applicable Feather MIT notices. No Renderer or its compiled bundle is included.
+GUIDE.txt describes the public API, lifecycle, data semantics and limitations.
+manifest.json lists exact content hashes, not a physical certification.
+
+Maintained engine and guide: the owner's canonical GPT-device-data-detector
+repository. Maintained Nightly application: truesiz.es-nightly. No stable-site
+integration is authorized. No model, display label, UA or calibration is uploaded
+by the engine. Static hosting still receives ordinary asset requests.
