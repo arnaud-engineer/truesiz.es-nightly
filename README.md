@@ -55,6 +55,14 @@ The older test:nightly/adversarial scripts target the superseded generic app, no
 the restored root. Current QA uses isolated Chromium, Firefox and WebKit profiles;
 mobile emulation and synthetic contexts are not hardware/physical validation.
 
+`tests/ui-regressions.mjs` checks the original author wordmark and settings panel
+on desktop, small portrait and landscape layouts in Chromium, Firefox and WebKit.
+Run it with Node and an external Playwright installation, setting
+`PLAYWRIGHT_MODULE` to its module path when needed; pass an output directory outside
+the checkout. Set `NIGHTLY_URL=https://dev.truesiz.es/` for the same public checks.
+The settings panel is bounded by the actual content area and resizes while open;
+its scrollable controls do not change the reference scale.
+
 ## Storage And Privacy
 
 Only `truesizes:heritage:profiles:v1` and `truesizes:heritage:preferences:v1` are

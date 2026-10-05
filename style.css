@@ -795,9 +795,13 @@ button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible
     #device-info, #input-form { margin: 24px 32px; }
     .aligning #calibrationTools { bottom: 90px; max-height: 100px; }
 }
+@media (max-width: 768px) and (orientation: portrait) {
+    .preferences-open main { padding-bottom: 240px; }
+}
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 @media (max-height: 500px) and (max-width: 768px) and (orientation: landscape) {
     main { padding: 85px 120px 65px 250px; }
+    .preferences-open main { padding-right: 140px; }
     #title { margin: 24px; }
     #title h1, #title h1 a { font-size: 36px; }
     #device-info { margin: 24px; max-width: 210px; }

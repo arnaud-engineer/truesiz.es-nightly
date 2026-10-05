@@ -248,12 +248,17 @@ window.TrueSizes = (function () {
         }
         cScreen.preferredUnit = next; renderObject();
     }
+    function sizePreferences() {
+        var space = capacity();
+        element('square').style.width = Math.min(600, space.width) + 'px';
+        element('square').style.height = Math.min(540, space.height) + 'px';
+    }
     function openPreferences() {
         state.preferences = true; document.body.classList.add('preferences-open');
         element('userPreferences').style.display = 'block'; element('square').style.display = 'flex';
-        element('square').style.width = 'min(600px, calc(100vw - 80px))';
-        element('square').style.height = Math.min(540, capacity().height) + 'px';
+        sizePreferences();
         element('app-settings-button').setAttribute('onclick', 'endUserPreferences();');
+        element('app-settings-button').setAttribute('aria-expanded', 'true');
         ['xVal', 'yVal', 'sizeUnit'].forEach(function (id) { element(id).disabled = true; });
         updateProfiles(); updateGraduations(); notice();
     }
@@ -261,6 +266,7 @@ window.TrueSizes = (function () {
         state.preferences = false; document.body.classList.remove('preferences-open');
         element('userPreferences').style.display = 'none';
         element('app-settings-button').setAttribute('onclick', 'goUserPreferences();');
+        element('app-settings-button').setAttribute('aria-expanded', 'false');
         ['xVal', 'yVal', 'sizeUnit'].forEach(function (id) { element(id).disabled = false; });
         renderObject();
     }
@@ -282,7 +288,9 @@ window.TrueSizes = (function () {
             if (state.calibrating) { state.calibrationContext = next; state.statusMessage = 'Rendering changed. Re-align both edges.'; }
             status();
         }
-        if (!state.preferences) { if (state.calibrating) renderReference(); else renderObject(); }
+        if (state.preferences) sizePreferences();
+        else if (state.calibrating) renderReference();
+        else renderObject();
     }
     function review() {
         if (state.basis === 'reference') { state.basis = 'proposal'; cScreen.confirmedCalibration = false; state.revision++; status(); }
