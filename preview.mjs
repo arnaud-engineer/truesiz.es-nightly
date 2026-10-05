@@ -7,7 +7,7 @@ import { execFileSync } from 'node:child_process';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const files = new Set(execFileSync('git',['ls-files','-z'],{cwd:root,encoding:'utf8'}).split('\0').filter(Boolean));
-for (const name of ['index.html','app.css','app.mjs']) files.add(name);
+for (const name of ['index.html','app.css','app.mjs','integration.js','progress.mjs']) files.add(name);
 const manifest = JSON.parse(await fs.readFile(path.join(root,'gpt-engine/manifest.json')));
 for (const row of manifest.files) files.add('gpt-engine/'+row.path);
 files.add('gpt-engine/manifest.json');

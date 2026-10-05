@@ -1,70 +1,138 @@
-<!doctype html>
-<html lang="fr" data-theme="auto">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#ffffff">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
-  <title>True Sizes Nightly</title>
-  <link rel="icon" href="/favicon-32x32.png">
-  <link rel="stylesheet" href="app.css">
-  <script type="module" src="app.mjs"></script>
-</head>
-<body>
-  <header class="app-header">
-    <div class="brand"><a href="/">truesiz.es</a><span>Nightly / GPT</span></div>
-    <nav aria-label="Liens"><a href="https://ko-fi.com/arnaudcool" target="_blank" rel="noopener noreferrer">Ko-fi</a><a href="gpt/">Laboratoire</a><button id="fullscreen" class="icon" title="Plein ecran" aria-label="Plein ecran"><img src="gpt-engine/assets/maximize.svg" alt=""></button></nav>
-  </header>
-  <main class="workspace">
-    <aside class="controls" aria-label="Reglages">
-      <section>
-        <h2>Dimensions</h2>
-        <div class="dimension-row">
-          <label>Largeur<input id="object-width" type="number" min="0.001" step="any" value="10" inputmode="decimal"></label>
-          <label>Hauteur<input id="object-height" type="number" min="0.001" step="any" value="10" inputmode="decimal"></label>
-          <label>Unite<select id="unit"><option value="cm">cm</option><option value="in">in</option></select></label>
-        </div>
-        <div class="tool-row"><button id="rotate" class="icon" title="Permuter les dimensions physiques" aria-label="Permuter les dimensions physiques" aria-pressed="false"><img src="gpt-engine/assets/rotate-cw.svg" alt=""></button><label class="check"><input id="graduations" type="checkbox" checked>Graduations</label><select id="theme" aria-label="Theme"><option value="auto">Automatique</option><option value="light">Clair</option><option value="dark">Sombre</option></select></div>
-      </section>
-      <section>
-        <h2>Reference</h2>
-        <fieldset class="segmented"><legend class="sr-only">Axe de reference</legend><label><input type="radio" name="axis" value="x" checked><span>Horizontal</span></label><label><input type="radio" name="axis" value="y"><span>Vertical</span></label></fieldset>
-        <label>Objet<select id="reference-preset"><option value="custom">Longueur personnelle</option><option value="card">Carte bancaire (nominale)</option><option value="five">5 cm</option><option value="ten">10 cm</option><option value="twenty">20 cm</option></select></label>
-        <div class="reference-row"><label>Longueur (cm)<input id="reference-cm" type="number" step="any" min="0.001" value="10" inputmode="decimal"></label><label>Affichage (px)<input id="reference-px" type="number" step="any" min="1" value="200" inputmode="decimal"></label></div>
-        <input id="reference-slider" type="range" min="1" max="1000" step="0.25" value="200" aria-label="Longueur de la reference en pixels CSS">
-        <button id="align" class="primary" disabled>Valider cet axe</button>
-        <dl class="axis-status"><div><dt>Horizontal</dt><dd id="axis-x">A reconfirmer</dd></div><div><dt>Vertical</dt><dd id="axis-y">A reconfirmer</dd></div></dl>
-        <div class="tool-row"><button id="save" class="icon" title="Enregistrer le profil GPT" aria-label="Enregistrer le profil GPT" disabled><img src="gpt-engine/assets/save.svg" alt=""></button><button id="restore" class="icon" title="Restaurer une proposition de profil" aria-label="Restaurer une proposition de profil"><img src="gpt-engine/assets/rotate-ccw.svg" alt=""></button><button id="reset" class="icon" title="Effacer le profil GPT" aria-label="Effacer le profil GPT"><img src="gpt-engine/assets/trash-2.svg" alt=""></button></div>
-        <output id="operation-status" class="operation" aria-live="polite"></output>
-      </section>
-      <section>
-        <h2>Appareil</h2>
-        <button id="identify" class="command"><img src="gpt-engine/assets/search.svg" alt="">Identifier</button>
-        <dl class="device-details"><div><dt>Code expose</dt><dd id="model">Non demande</dd></div><div><dt>Machine</dt><dd id="machine-name">Indeterminee</dd></div><div><dt>Panneau actif</dt><dd>Non qualifie</dd></div></dl>
-        <label>Recherche<input id="device-query" type="search" maxlength="256" placeholder="Nom du modele" autocomplete="off"></label>
-        <select id="device-choice" aria-label="Declaration de machine ou de panneau"><option value="">Inconnu / non selectionne</option></select>
-        <output id="candidate-status" class="small"></output>
-      </section>
-      <section>
-        <h2>Surface</h2>
-        <button id="screens" class="command"><img src="gpt-engine/assets/monitor.svg" alt="">Choisir un ecran</button>
-        <select id="screen-choice" aria-label="Ecran propose" hidden></select>
-        <button id="disconnect-screens" class="secondary" hidden>Oublier les ecrans</button>
-        <output id="surface-status" class="small">Liaison indeterminee</output>
-      </section>
-      <details><summary>Observations</summary><dl id="observations" class="device-details"></dl></details>
-    </aside>
-    <section class="measurement" aria-label="Zone de mesure">
-      <div class="measure-toolbar"><fieldset class="segmented"><legend class="sr-only">Vue</legend><label><input type="radio" name="view" value="object"><span>Objet</span></label><label><input type="radio" name="view" value="reference" checked><span>Reference</span></label></fieldset><output id="decision-status" aria-live="polite">Chargement du moteur</output></div>
-      <div id="stage" class="stage">
-        <div id="reference-line" class="reference-line" hidden><i class="endpoint start"></i><i class="endpoint end"></i></div>
-        <div id="object-frame" class="object-frame" hidden><div id="ticks-x" class="ticks x"></div><div id="ticks-y" class="ticks y"></div></div>
-        <div id="stage-empty" class="stage-empty">Reference manquante</div>
-      </div>
-      <div class="measure-caption"><output id="measure-caption"></output><span id="validation-status">Reference non verifiee</span></div>
-    </section>
-  </main>
-  <footer><span>par <a href="https://arnaud.cool">arnaud.cool</a></span><a href="gpt-engine/GUIDE.txt">Guide GPT</a><a href="gpt-engine/SOURCES.txt">Sources et licences</a></footer>
-  <noscript>JavaScript indisponible : aucun rendu de mesure.</noscript>
-</body>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!-- ENCODAGE -->
+			<meta charset="utf-8" />
+		<!-- PAGE INFO -->
+			<title>truesiz.es</title>
+		<!-- RESPONSIVENESS -->
+			<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+		<!-- FAVICON (https://www.favicon-generator.org/) -->
+			<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+			<link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+			<link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+			<link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+			<link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+			<link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+			<link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+			<link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+			<link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+			<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+			<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+			<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+			<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+			<link rel="manifest" href="/manifest.json">
+			<meta name="msapplication-TileColor" content="#ffffff">
+			<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+			<meta name="theme-color" content="#ffffff">
+			<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'self'; base-uri 'none'; form-action 'none'">
+		<!-- CSS -->
+			<link rel="stylesheet" href="style.css" />
+			<script async src="lib/device-data-detector-min.js" onload="if (window.TrueSizes) TrueSizes.legacyReady();"></script>
+			<script defer src="integration.js"></script>
+			<script defer src="script.js"></script>
+	</head>
+
+	<body>
+		<div id="background">
+			<canvas id="frame-1" width="150" height="150">Your browser does not support the canvas element.</canvas>
+			<canvas id="frame-2" width="150" height="150">Your browser does not support the canvas element.</canvas>
+			<canvas id="frame-3" width="150" height="150">Your browser does not support the canvas element.</canvas>
+			<canvas id="frame-4" width="150" height="150">Your browser does not support the canvas element.</canvas>
+		</div>
+
+		<header>
+			<div id="title">
+				<h1><a href="#">truesiz.es</a></h1>
+				<h2>size does matter</h2>
+			</div>
+			<div id="credits">
+				<h1>by <a href="http://arnaud.cool"><img src="rsrc/img/arnaud-cool-logo.svg" alt="arnaud.cool logo"/> arnaud.cool</a></h1>
+				<p><a href="https://ko-fi.com/arnaudcool">buy me a coffee</a></p>
+				<p>or <a href="http://arnaud.engineer">hire me</a></p>
+			</div>
+		</header>
+
+		<main>
+			<div id="square">
+				<object data="rsrc/img/graduations.svg" type="image/svg+xml" id="graduations"></object>
+				<object data="rsrc/img/graduations-inch.svg" type="image/svg+xml" id="graduations-inch"></object>
+				<object data="rsrc/img/graduations-portrait.svg" type="image/svg+xml"  id="graduations-portrait"> </object>
+				<object data="rsrc/img/graduations-portrait-inch.svg" type="image/svg+xml"  id="graduations-portrait-inch"> </object>
+				<div id="userPreferences">
+					<div>
+						<h1>theme</h1>
+						<p><button type="button" class="themeButton" id="auto-mode-button" onclick="setAutoMode();"><img alt="" src="rsrc/img/auto-dark-mode-button.svg"/><span>automatic</span></button><button type="button" class="themeButton" id="dark-mode-button" onclick="setDarkMode();"><img alt="" src="rsrc/img/dark-mode-button.svg"/><span>dark</span></button> <button type="button" class="themeButton" id="light-mode-button" onclick="setLightMode();"><img alt="" src="rsrc/img/light-mode-button.svg"/><span>light</span></button></p>
+						<h1>graduations</h1>
+						<p><button onclick="removeGraduations();" id="graduation-button">hide graduations</button></p>
+						<h1>preferred unit</h1>
+						<p>
+							<select name="unit" id="preferredUnit" onchange="setPreferredUnit();">
+								<option value="cm">cm</option>
+								<option value="inches">inches</option>
+							</select>
+						</p>
+						<h1>device model</h1>
+						<p><button id="identify-device" type="button" disabled>read device model</button><span id="model-result" role="status">optional reading unavailable</span></p>
+						<h1>calibration data</h1>
+						<p id="screen-list"><b>screen 1</b> : <span>model</span> (<span>15.4 inch.</span> - <span>1080</span> x <span>1920</span>) </p>
+						<h1>app data</h1>
+						<p><button onclick="resetApp();">erase new settings and profiles</button></p>
+					</div>
+				</div>
+
+			</div>
+				<div id="instructions" role="status" aria-live="polite">
+					<noscript>JavaScript is currently disabled on your browser, but truesiz.es can't works without it : <a href="https://www.enable-javascript.com">See how to enable it</a></noscript>
+				</div>
+				<div id="calibrationTools">
+					<div>
+						<h1>calibrate with an object</h1>
+						<select id="calibrationObjectsList" aria-label="Reference object" onchange="changeCalibrationObject();"></select>
+						<p>align both edges with the object</p>
+					</div>
+					<details>
+						<summary>screen diagonal (estimate)</summary>
+						<p id="screenSizeButtons"></p>
+					</details>
+				</div>
+		</main>
+
+		<footer>
+			<div id="device-info">
+				<div>model : <span id="deviceName"></span></div>
+				<div>screen size : <span id="deviceScreenSize"></span></div>
+				<div>resolution : <span id="deviceResolution"></span></div>
+				<div id="calibrationBox">
+					<div id="calibrationIcon"><img id="calibrationIconImg" alt=""/></div>
+					<div id="calibrationStatus">app failure</div>
+					<div id="calibrationButtons">
+						<button id="confirm-calibration-button" onclick="confirmCalibration();">confirm</button>
+						<button id="calibration-button" onclick="calibrationModeOn();">manual calibration</button>
+						<button id="reset-button" onclick="resetCalibration();">reset calibration</button>
+					</div>
+				</div>
+			</div>
+
+			<div id="input-form">
+				<form onsubmit="return false;">
+					<select name="unit" id="sizeUnit" onchange="changeSizeUnit();" aria-label="Unit">
+						<option value="cm">cm</option>
+						<option value="inches">inches</option>
+					</select>
+					<div class="full-input"><label for="xVal">width</label><input id="xVal" oninput="changeX(this);" type="number" required name="x" min="0.001" step=".1" autocomplete="off" placeholder="10.0"></div>
+					<div class="full-input"><label for="yVal">height</label><input id="yVal" oninput="changeY(this);" type="number" required name="y" min="0.001" step=".1" autocomplete="off" placeholder="10.0"></div>
+					<div>
+						<button type="button" id="fullscreen-button" onclick="goFullScreen();" aria-label="Fullscreen" title="Fullscreen"><img src="rsrc/img/fullscreen-icon.svg"/></button>
+						<button type="button" id="app-settings-button" onclick="goUserPreferences();" aria-label="Settings" title="Settings"><img src="rsrc/img/app-settings-icon.svg"/></button>
+					</div>
+				</form>
+			</div>
+			<div id="calibration-zoom">
+				<button onclick="changeResolutionOnButton('+');">+</button>
+				<button onclick="changeResolutionOnButton('-');">-</button>
+			</div>
+		</footer>
+
+	</body>
 </html>

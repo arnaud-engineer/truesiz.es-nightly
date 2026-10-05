@@ -1,45 +1,75 @@
-# True Sizes Nightly / GPT
+# True Sizes Nightly
 
-The root [Nightly application](https://dev.truesiz.es/) now consumes GPT Device
-Data Detector 0.2.0-experimental. It renders an ideal rectangle from two current,
-independent CSS/cm references, never from a guessed diagonal or nominal PPI.
-Recognition is indicative and physical accuracy is not validated.
+Nightly preserves the historical True Sizes interface and adds focused safeguards.
+The stable site and original detector repository are untouched.
 
 ## Maintained Sources
 
-`index.html`, `app.css`, `app.mjs` are the Nightly app. `gpt-engine/` is the
-manifest-owned SDK distribution from the canonical GPT-device-data-detector
-repository, not a second source tree. Its [guide](gpt-engine/GUIDE.txt),
-[source notice](gpt-engine/SOURCES.txt), MPL license and Lucide notices are included.
-Do not hand-edit copied SDK files. The older `gpt/` lab is independently versioned
-and unchanged. The old `script.js`, styles, bundles and PWA files remain historical
-references but are no longer loaded by the root app. Existing Pages main `/`,
-CNAME and deployment configuration are unchanged. Stable True Sizes is untouched.
+`index.html`, `style.css` and `script.js` retain the original composition and
+assets. `integration.js` supplies the historical consumer's corrected measurement,
+storage and lifecycle behavior. Optional `progress.mjs` consumes the GPT SDK's pure
+contracts and reads UA-CH model only on command. The former generic `app.css` and
+`app.mjs` remain as historical implementation evidence, not loaded by the root.
+The legacy bundle loads asynchronously; optional SDK modules are inserted only
+after the classic controls initialize. Neither download is a manual-workflow gate.
+
+`gpt-engine/` is a manifest-owned SDK distribution from GPT-device-data-detector;
+its guide, source notice, MPL license and icon notices are included. Never hand-edit
+copied SDK modules. The separately versioned `gpt/` laboratory is unchanged.
+CNAME, Pages deployment configuration and the inherited bundle remain unchanged.
+
+## Measurement Boundaries
+
+The initial frame and screen diagonal choices are explicitly nominal estimates.
+Light legacy hints retain the old catalogue's family and resolution declarations,
+including old devices; they do not run GPU/Renderer/battery probes. A tuple can
+match several models, and does not bind the active panel. Legacy algorithms remain
+in the preserved bundle; its automatic deviceDetection() is not called.
+
+Manual alignment adjusts a direct CSS/cm ratio and checks both object edges.
+It assumes isotropic mapping, not two independent axis measurements, and never
+fabricates a new physical diagonal. One visible starting draft may be seeded to
+fit the window; entered metric objects are never reduced to fit. Invalid,
+oversized or transformed frames are masked rather than left stale. Centimeter /
+inch conversion preserves the requested dimensions using exactly 2.54 cm per inch.
+
+Screen tuple, DPR, visual scale, native screen changes and transformed geometry
+require reference review. Ordinary layout resize or scroll alone does not erase
+an aligned reference. Optional segment/posture checks require the SDK. Hidden
+contexts and persisted-page restoration require review. A swap between physically
+different panels with identical exposed contexts can remain undetectable.
+Human alignment and browser software tests do not establish physical accuracy.
 
 ## Preview And Verification
 
 Use Node 22+ with `node preview.mjs 8788`; open http://127.0.0.1:8788/.
-This preview allowlists tracked assets and SDK manifest entries, excluding private
-AGENTS and Git metadata. The canonical GPT checkout owns `npm test`,
-`npm run test:types`, `npm run build:sdk`, `npm run copy:nightly`,
-`npm run test:nightly` and `npm run test:nightly:adversarial`.
-Fixtures exercise software failure paths, not real multi-screen/physical length.
-Review fresh Git refs and protected copy ownership before every release.
+The preview only serves tracked app assets and reviewed SDK/adapter entries,
+excluding private AGENTS and Git metadata. In the canonical GPT checkout:
 
-## Privacy And Limits
+- `npm test` and `npm run test:types`: engine contracts and consumer declarations.
+- `npm run build:sdk`, `npm run copy:nightly`: protected SDK generation/copy.
+- `npm run test:nightly:heritage -- /absolute/output/path`: current consumer QA.
+- `NIGHTLY_URL=https://dev.truesiz.es/ npm run test:nightly:heritage -- /absolute/output/path`: public smoke checks without adversarial fixtures.
 
-No analytics, third-party runtime requests, GPU/battery benchmark or label/serial
-collection. Optional model and screen acquisition only run after commands.
-`gpt-ddd:profile:v1` stores draft references on explicit save; restoring requires
-reconfirmation. `gpt-truesizes:preferences:v1` stores only unit/theme/graduations.
-Profile reset touches neither preferences nor any legacy key. Same-origin storage
-prefixes are not security isolation. Known segment-spanning or transformed zones
-are refused; invisible identical-context panel swaps remain undetectable.
+The older test:nightly/adversarial scripts target the superseded generic app, not
+the restored root. Current QA uses isolated Chromium, Firefox and WebKit profiles;
+mobile emulation and synthetic contexts are not hardware/physical validation.
+
+## Storage And Privacy
+
+Only `truesizes:heritage:profiles:v1` and `truesizes:heritage:preferences:v1` are
+written or reset by this consumer. Reference profiles are bounded proposals with
+exposed context, never serials, machine labels or unique display IDs. Reloading a
+profile prepares its scale but requires a new alignment. Historical `screen N`
+and `appData` are read-only proposals/preferences; unrelated or corrupt keys do
+not stop manual measurement. Earlier GPT profile/preference keys remain untouched.
+Prefixes are not a same-origin security sandbox. No raw UA, optional model or
+GPU result is persisted. Storage refusal leaves the live manual workflow usable.
 
 ## Historical Documentation
 
-The text below describes the previous app. Its automatic calibration, multi-screen
-recognition and PWA claims do not describe or validate this experimental engine.
+The text below describes the original product. Its automatic calibration and
+multi-screen claims are not physical validation of this experimental integration.
 
 truesiz.es
 ==============

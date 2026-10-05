@@ -1,7 +1,55 @@
 # GPT Device Data Detector 0.2
 
 Experimental software implementation, not a physically qualified measuring system.
-The synchronous inherited deviceDetection() is a different API and is not used.
+The synchronous inherited deviceDetection() is a different API; the SDK does not use it.
+
+## Historical Nightly Integration (2026-10-05)
+
+The root Nightly consumer now keeps the original True Sizes interface. Its
+maintained app sources are index.html, style.css, script.js, integration.js and
+progress.mjs. This is an incremental consumer, not a replacement UI or a claim
+that every research hypothesis has been implemented.
+
+The classical adapter works without native modules, a new graph fetch or optional
+identity acquisition. Legacy hints load asynchronously; SDK modules are inserted
+after the classic interface initializes, so either download can stall without
+holding manual controls behind DOMContentLoaded. Late legacy hints cannot replace
+a human-selected diagonal or aligned reference. It retains the unchanged legacy bundle and nominal screen
+diagonal choices. Its automatic hints read only family/geometry declarations:
+they do not call deviceDetection(), GPU/Renderer or battery tests. Several models
+can share a tuple, the catalogue is unverified, and an identical exposed tuple
+does not identify the current physical panel. Old algorithms remain in the
+preserved reference bundle, not silently promoted into reliable measurements.
+
+Manual alignment adjusts a direct CSS/cm ratio rather than fabricating a new
+physical diagonal. One scalar fit is used for both dimensions, with an explicit
+human check of both edges and an isotropic-mapping assumption. This is not two
+independent axis measurements, nor independent physical verification. A visible
+initial draft may be seeded to fit the window; a requested metric object is
+never shrunk automatically. Invalid or oversized objects are masked.
+
+The optional progress.mjs consumer uses DetectionSession, readBrowserContext,
+decideObject and geometry/segment guards directly, without the graph-dependent
+DeviceDetector coordinator. This avoids invalidating a reference on mere zone
+position, scroll or ordinary window resizing when its exposed mapping context is
+unchanged. Screen tuple, DPR, visual scale and transformed geometry require
+reference review; identical-context panel changes can remain invisible.
+Machine-model acquisition has a separate request lifetime and never supplies
+physical scale or overwrites alignment. UA-CH model is browser-reported, not
+an accepted catalogue alias. Missing capabilities keep manual controls usable.
+
+The historical adapter owns only truesizes:heritage:profiles:v1 and
+truesizes:heritage:preferences:v1. Profiles contain a bounded proposed scale and
+exposed rendering context, not a serial, machine label or unique display ID.
+Restoring never activates a reference without another human alignment. Valid
+historical screen N/appData entries are read-only proposals/preferences; corrupt
+or unrelated keys are not parsed, overwritten or removed. The previous
+gpt-ddd:profile:v1 and gpt-truesizes:preferences:v1 keys stay unchanged.
+
+Run npm run test:nightly:heritage for the current integrated consumer. The earlier
+test:nightly and test:nightly:adversarial scripts target the superseded generic UI,
+not this restored root. SDK contract tests still apply; physical validation does
+not exist. See the Nightly README for current consumer boundaries.
 
 ## Entry Point
 

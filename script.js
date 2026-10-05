@@ -85,7 +85,7 @@
 
 	var lcalibObjects = [
 		new CalibrationObjects("Credit Card", 8.56, 5.398),
-		new CalibrationObjects("A4 sheet portrait", 21, 6),
+		new CalibrationObjects("A4 sheet portrait", 21, 29.7),
 		new CalibrationObjects("5 €", 12, 6.2),
 		new CalibrationObjects("10 €", 12.7, 6.7),
 		new CalibrationObjects("20 €", 13.3, 7.2),
@@ -113,7 +113,9 @@
 		}
 
 		function ppcmCalculation()
-		{ return 0.3937008 * ppiCalculation(); }
+		{
+		    return ppiCalculation() / 2.54;
+		}
 
 
 	/*  ----------------------------------------
@@ -121,10 +123,14 @@
 		---------------------------------------- */
 
 		function realInch(x=1)
-		{ return x * ppiCalculation() / cScreen.dppx + "px"; }
+		{
+		    return x * 2.54 * TrueSizes.q() + 'px';
+		}
 
 		function realCm(x=1)
-		{ return x * ppcmCalculation() / cScreen.dppx + "px"; }
+		{
+		    return x * TrueSizes.q() + 'px';
+		}
 
 
 /*  =========================================================================
@@ -139,7 +145,7 @@
 		{
 			let generatedButtons = "";
 			for(var i=0 ; i<lResolutions.length ; i++) {
-				generatedButtons += '<button onmousedown="changeResolution(' + lResolutions[i] + ')" >' + lResolutions[i] + '"' + '</button>';
+				generatedButtons += '<button onclick="changeResolution(' + lResolutions[i] + ')" >' + lResolutions[i] + '"' + '</button>';
 			}
 			generatedButtons += "<input id=\"customResolution\" autocomplete=\"off\" placeholder='X.XX\"' onchange='changeResolution(this.value)'/>";
 			document.getElementById("screenSizeButtons").innerHTML = generatedButtons;
@@ -164,24 +170,7 @@
 
 			function deviceRetrieval()
 			{
-				var alreadyCalibrated = localSaveRead();
-				if (alreadyCalibrated === -1) {
-					cScreen.diagonal = 15.4; // default value
-					cScreen.name = "Unknown device";
-
-					var detectedScreen = deviceDetection(builtInScreenAlreadyFound);
-
-					// INTERFACE DATA UPDATE
-					cScreen.name = detectedScreen.name;
-					cScreen.diagonal = detectedScreen.screenSize;
-					cScreen.ppi = detectedScreen.ppi;
-					cScreen.builtIn = detectedScreen.builtIn;
-					setCalibrationStatus(detectedScreen.confidence);
-				}
-				else
-				{
-					setCalibrationStatus(cScreen.calibrationStatus);
-				}
+			    return TrueSizes.detect();
 			}
 
 		/*  ---------------
@@ -190,139 +179,39 @@
 
 			function localSaveEdit()
 			{
-				let currentScreenIsNew = true;
-				var i;
-				for(i=0 ; i<localStorage.length; i++) {
-					var key = localStorage.key(i);
-					var value = JSON.parse(localStorage[key]);
-					if(key.includes("screen"))
-					{
-						console.log("SAVE EDIT : " + key + " => " + value.name);
-						// TODO : TEST IF ABLE TO DETECT ROTATED SCREEN
-						if( (value.wRes == cScreen.wRes || value.hRes == cScreen.wRes) && (value.wRes == cScreen.hRes || value.hRes == cScreen.hRes))
-						{
-							localStorage.setItem(key, JSON.stringify(cScreen));
-							currentScreenIsNew = false;
-						}
-					}
-				}
-				if (currentScreenIsNew === true)
-				{
-					localStorage.setItem("screen " + i, JSON.stringify(cScreen));
-				}
-				updateScreenDisplay();
+			    return TrueSizes.saveProfile();
 			}
 
 				function appSaveEdit()
 				{
-					var i;
-					var hasAppData = false;
-					for(i=0 ; i<localStorage.length; i++) {
-						var key = localStorage.key(i);
-						var value = JSON.parse(localStorage[key]);
-						if(key.includes("appData"))
-						{
-							hasAppData = true;
-							console.log("SAVE EDIT : " + key + " => " + value.name);
-							localStorage.setItem(key, JSON.stringify(app));
-						}
-					}
-					if(hasAppData === false) {
-						localStorage.setItem("appData", JSON.stringify(app));
-					}
+				    return TrueSizes.savePreferences();
 				}
 
 			function localSaveRead()
 			{
-				let currentScreenIsNew = true;
-				var i;
-				for(i=0 ; i<localStorage.length; i++) {
-					var key = localStorage.key(i);
-					var value = JSON.parse(localStorage[key]);
-					if(key.includes("screen"))
-					{
-						console.log("SAVE READ : " + key + " => " + value.name);
-						if (value.builtIn === true)
-							builtInScreenAlreadyFound = true;
-						// TODO : TEST IF ABLE TO DETECT ROTATED SCREEN
-						if( (value.wRes == cScreen.wRes || value.hRes == cScreen.wRes) && (value.wRes == cScreen.hRes || value.hRes == cScreen.hRes))
-						{
-							currentScreenIsNew = false;
-							// INJECT THE CALIBRATION DATA IN THE APP
-							try {
-								cScreen.name = value.name;
-								cScreen.deviceFamily = value.deviceFamily;
-								cScreen.diagonal = value.diagonal;
-								cScreen.ppi = value.ppi;
-								cScreen.builtIn = value.builtIn;
-								cScreen.dppx = value.dppx;
-								cScreen.wRes = value.wRes;
-								cScreen.hRes = value.hRes;
-								cScreen.preferredUnit = value.preferredUnit;
-								cScreen.preferredCalibrationObject = value.preferredCalibrationObject;
-								cScreen.confirmedCalibration = value.confirmedCalibration;
-								cScreen.calibrationStatus = value.calibrationStatus;
-								return 1;
-							}
-							catch(e) {
-								return -1;
-							}
-						}
-					}
-				}
-				if (currentScreenIsNew === true)
-				{
-					return -1;
-				}
-				updateScreenDisplay();
+			    return TrueSizes.restore();
 			}
 
 				function appSaveRead()
 				{
-					var i;
-					for(i=0 ; i<localStorage.length; i++) {
-						var key = localStorage.key(i);
-						var value = JSON.parse(localStorage[key]);
-						if(key.includes("appData"))
-						{
-							// INJECT THE CALIBRATION DATA IN THE APP
-							try {
-								app.preferredUnit = value.preferredUnit;
-								app.theme = value.theme;
-								app.fullscreenStatus = value.fullscreenStatus;
-								app.showGraduations = value.showGraduations;
-								return 1;
-							}
-							catch(e) {
-								return -1;
-							}
-						}
-					}
+				    return TrueSizes.readPreferences();
 				}
 
 			function localSaveRemove()
 			{
-				for(i=0 ; i<localStorage.length; i++) {
-					var key = localStorage.key(i);
-					if(key.includes("screen"))
-						localStorage.removeItem(key);
-				}
+			    return TrueSizes.resetCalibration();
 			}
 
 
 				function resetCalibration()
 				{
-					localSaveRemove();
-					//document.location.reload();
-					builtInScreenAlreadyFound = false;
-					deviceFoundProcedure();
-					setCalibrationStatus(cScreen.calibrationStatus);
-					updateScreenDisplay();
-					document.getElementById("userPreferences").style.display = "none";
+				    return TrueSizes.resetCalibration();
 				}
 
 			function resetAppData()
-			{ localStorage.clear(); }
+			{
+			    return TrueSizes.resetAppData();
+			}
 
 				function resetApp()
 				{
@@ -336,104 +225,12 @@
 
 			function confirmCalibration()
 			{
-				setCalibrationStatus(3);
-				cScreen.confirmedCalibration = true;
-				localSaveEdit();
+			    return TrueSizes.begin();
 			}
 
 			function setCalibrationStatus(s)
 			{
-				let warningMsg = "<h1>check your screen calibration (confirm your model or verify the frame fits a credit card)</h1><h1>else, proceed manual calibration</h1>";
-				let basicInstructionMsg = "<h1>enter a width and an height to change my size</h1>";
-
-				// USER-CALIBRATED
-				if (s === 4) {
-					cScreen.calibrationStatus = 4;
-					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/valid-icon.svg");
-					cScreen.name = "user-calibrated screen";
-					document.getElementById("calibrationStatus").innerHTML = cScreen.name;
-					document.getElementById("deviceName").textContent = cScreen.name;
-					document.getElementById("confirm-calibration-button").style.display = "none";
-					document.getElementById("calibrationTools").style.display = "none";
-					document.getElementById("calibration-zoom").style.display = "none";
-					//document.getElementById("calibration-button").style.display = "none";
-					document.getElementById("input-form").style.display = "block";
-					document.getElementById("instructions").innerHTML = basicInstructionMsg;
-					document.getElementById("instructions").style.display = "block";
-					localSaveEdit();
-				}
-				// SELF-CALIBRATED (highest confidence indice)
-				if (s === 3) {
-					cScreen.calibrationStatus = 3;
-					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/valid-icon.svg");
-					document.getElementById("calibrationStatus").innerHTML = "self-calibrated";
-					document.getElementById("confirm-calibration-button").style.display = "none";
-					document.getElementById("calibrationTools").style.display = "none";
-					document.getElementById("calibration-zoom").style.display = "none";
-					document.getElementById("reset-button").style.display = "none";
-					//document.getElementById("calibration-button").style.display = "none";
-					document.getElementById("calibration-button").textContent = "manual calibration";
-					document.getElementById("calibration-button").setAttribute("onclick","calibrationModeOn();");
-					document.getElementById("input-form").style.display = "block";
-					document.getElementById("instructions").innerHTML = basicInstructionMsg;
-					document.getElementById("instructions").style.display = "block";
-					localSaveEdit();
-				}
-				// PROBABLY SELF-CALIBRATED (doubt or possible confusion)
-				else if (s === 2) {
-					cScreen.calibrationStatus = 2;
-					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/approximation-icon-v2.svg");
-					document.getElementById("calibrationStatus").innerHTML = "probably self-calibrated";
-					document.getElementById("confirm-calibration-button").style.display = "none";
-					document.getElementById("calibrationTools").style.display = "none";
-					document.getElementById("calibration-zoom").style.display = "none";
-					document.getElementById("reset-button").style.display = "none";
-					//document.getElementById("calibration-button").style.display = "none";
-					document.getElementById("confirm-calibration-button").style.display = "inline-block";
-					document.getElementById("input-form").style.display = "block";
-					document.getElementById("instructions").innerHTML = warningMsg + basicInstructionMsg;
-					document.getElementById("instructions").style.display = "block";
-				}
-				// POORLY SELF-CALIBRATED (best-effort despite the lack of model detection)
-				else if (s === 1) {
-					cScreen.calibrationStatus = 1;
-					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/warning-icon.svg");
-					document.getElementById("calibrationStatus").innerHTML = "poorly self-calibrated";
-					document.getElementById("confirm-calibration-button").style.display = "none";
-					document.getElementById("calibrationTools").style.display = "none";
-					document.getElementById("calibration-zoom").style.display = "none";
-					document.getElementById("reset-button").style.display = "none";
-					//document.getElementById("calibration-button").style.display = "none";
-					document.getElementById("confirm-calibration-button").style.display = "inline-block";
-					document.getElementById("input-form").style.display = "block";
-					document.getElementById("instructions").innerHTML = warningMsg + basicInstructionMsg;
-					document.getElementById("instructions").style.display = "block";
-				}
-				// NOT CALIBRATED (too unsure to presume anything of complete lack of usable data)
-				else if (s === 0) {
-					cScreen.calibrationStatus = 0;
-					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/unknown-error-icon-v2.svg");
-					document.getElementById("calibrationStatus").innerHTML = "not calibrated";
-					document.getElementById("confirm-calibration-button").style.display = "none";
-					document.getElementById("calibrationTools").style.display = "none";
-					document.getElementById("calibration-zoom").style.display = "none";
-					document.getElementById("reset-button").style.display = "none";
-					//document.getElementById("calibration-button").style.display = "none";
-					document.getElementById("confirm-calibration-button").style.display = "inline-block";
-					document.getElementById("input-form").style.display = "block";
-					document.getElementById("instructions").innerHTML = warningMsg + basicInstructionMsg;
-					document.getElementById("instructions").style.display = "block";
-				}
-				// MANUAL CALIBRATING NOW
-				else if (s === -1) {
-					document.getElementById("calibrationStatus").textContent = "manual calibration";
-					document.getElementById("deviceName").textContent = "manual calibration";
-					document.getElementById("calibrationIconImg").setAttribute("src", "rsrc/img/calibration-icon.svg");
-					document.getElementById("confirm-calibration-button").style.display = "none";
-					document.getElementById("reset-button").style.display = "block";
-					document.getElementById("instructions").innerHTML = basicInstructionMsg;
-				}
-				localSaveEdit();
+			    return TrueSizes.status();
 			}
 
 		/*  ---------------
@@ -442,43 +239,12 @@
 
 			function calibrationModeOn()
 			{
-				// Hide use intructions
-				document.getElementById("instructions").style.display = "none";
-				// Disable interface controls
-				document.getElementById("input-form").style.display = "none";
-				// Start -> End calibration button
-				document.getElementById("calibration-button").textContent = "end calibration";
-				document.getElementById("calibration-button").setAttribute("onclick","calibrationModeOff();");//.click = "calibrationModeOff();";
-				// Update calibration data
-				setCalibrationStatus(-1);
-				// Display calibration elements
-				document.getElementById("calibrationTools").style.display = "block";
-				document.getElementById("calibration-zoom").style.display = "flex";
-				// Add calibration controls
-				window.onwheel = function() {changeResolutionOnScroll()}; // scroll
-				document.addEventListener('keydown', function(event) { changeResolutionOnKeyPress(event); });
-				// Draw a first frame based on the preferred calibration object (or the top listed one (credit card))
-				changeCalibrationObject();
+			    return TrueSizes.begin();
 			}
 
 			function calibrationModeOff()
 			{
-				// Enable interface controls
-				document.getElementById("input-form").style.display = "block";
-				// End -> Start calibration button
-				document.getElementById("calibration-button").textContent = "manual calibration";
-				document.getElementById("calibration-button").setAttribute("onclick","calibrationModeOn();");
-				// Update calibration data
-				setCalibrationStatus(4);
-				// Hide calibration elements
-				document.getElementById("calibrationTools").style.display = "none";
-				document.getElementById("calibration-zoom").style.display = "none";
-				// Remove calibration controls
-				window.onwheel = function() {};
-				// return to the asked size
-				reloadSquare();
-				// Save calibration
-				localSaveEdit();
+			    return TrueSizes.finish();
 			}
 
 
@@ -488,78 +254,22 @@
 
 			function changeCalibrationObject()
 			{
-				// apply new preferred calibration object
-				cScreen.preferredCalibrationObject = document.getElementById("calibrationObjectsList").value;
-				// update the frame size (orientation depending on the screen orientation)
-				if(window.innerWidth > window.innerHeight) {
-					document.getElementById("square").style.width = realCm(lcalibObjects[cScreen.preferredCalibrationObject].width);
-					document.getElementById("square").style.height = realCm(lcalibObjects[cScreen.preferredCalibrationObject].height);
-				}
-				else {
-					document.getElementById("square").style.width = realCm(lcalibObjects[cScreen.preferredCalibrationObject].height);
-					document.getElementById("square").style.height = realCm(lcalibObjects[cScreen.preferredCalibrationObject].width);
-				}
-				localSaveEdit();
+			    return TrueSizes.changeReference();
 			}
 
-			function changeResolutionOnScroll()
+			function changeResolutionOnScroll(event)
 			{
-				// Prevent actual scrolling
-				event.preventDefault();
-				// change the screen diagonal smoothly and keep reasonable
-				let newdiagonal = cScreen.diagonal * (1 + .0025 * event.deltaY);
-				if(newdiagonal >= 1 && newdiagonal <= 250) // no screen lower than 1 inche and bigger than 250 inches
-				{
-					// apply new diagonal
-					cScreen.diagonal = newdiagonal;
-					// update the frame size
-					changeCalibrationObject();
-					// Update calibration data
-					document.getElementById("deviceScreenSize").textContent = cScreen.diagonal.toFixed(1) + " inch.";
-				}
-				updateGraduations();
+			    return TrueSizes.wheel(event);
 			}
 
 			function changeResolutionOnKeyPress(event)
 			{
-				let newdiagonal;
-				// If left, down, -
-				if(event.keyCode == 37 || event.keyCode == 40 || event.keyCode == 173)
-					newdiagonal = cScreen.diagonal + .2;
-				// If right, up, +
-				else if(event.keyCode == 39 || event.keyCode == 38 || event.keyCode == 61)
-					newdiagonal = cScreen.diagonal - .2;
-				// change the screen diagonal smoothly and keep reasonable
-				if(newdiagonal >= 1 && newdiagonal <= 250) // no screen lower than 1 inche and bigger than 250 inches
-				{
-					// apply new diagonal
-					cScreen.diagonal = newdiagonal;
-					// update the frame size
-					changeCalibrationObject();
-					// Update calibration data
-					document.getElementById("deviceScreenSize").textContent = cScreen.diagonal.toFixed(1) + " inch.";
-				}
-				updateGraduations();
+			    return TrueSizes.key(event);
 			}
 
 			function changeResolutionOnButton(event)
 			{
-				let newdiagonal;
-				if(event === "-")
-					newdiagonal = cScreen.diagonal + .2;
-				else if(event === "+")
-					newdiagonal = cScreen.diagonal - .2;
-				// change the screen diagonal smoothly and keep reasonable
-				if(newdiagonal >= 1 && newdiagonal <= 250) // no screen lower than 1 inche and bigger than 250 inches
-				{
-					// apply new diagonal
-					cScreen.diagonal = newdiagonal;
-					// update the frame size
-					changeCalibrationObject();
-					// Update calibration data
-					document.getElementById("deviceScreenSize").textContent = cScreen.diagonal.toFixed(1) + " inch.";
-				}
-				updateGraduations();
+			    return TrueSizes.adjust(event === '+' ? 1.01 : 1 / 1.01);
 			}
 
 
@@ -569,16 +279,7 @@
 
 			function changeResolution(res)
 			{
-				// apply new diagonal
-				cScreen.diagonal = res;
-				// update the frame size
-				changeCalibrationObject();
-				// Update calibration data
-				document.getElementById("deviceScreenSize").textContent = cScreen.diagonal + " inch.";
-				// Turn off calibration mode
-				calibrationModeOff();
-				// 
-				updateGraduations();
+			    return TrueSizes.chooseDiagonal(res);
 			}
 
 
@@ -592,15 +293,7 @@
 
 			function changeSizeUnit()
 			{
-				let sUnit = document.getElementById("sizeUnit").value;
-				if(sUnit === "cm")
-					cScreen.preferredUnit = "cm";
-				else if(sUnit === "inches")
-					cScreen.preferredUnit = "inches";
-				else
-					console.log("ERROR : unknown size unit (not cm, not inches)");
-				updateGraduations();
-
+			    return TrueSizes.changeUnit();
 			}
 
 		/*  ---------------
@@ -608,36 +301,20 @@
 			--------------- */
 
 			function reloadSquare()
-			{ changeX(); changeY(); }
+			{
+			    return TrueSizes.renderObject();
+			}
 
 				// WIDTH
 				function changeX()
 				{
-					// Hide use intructions
-					document.getElementById("instructions").style.display = "none";
-					// Apply the new size if valid entry
-					var xVal = document.getElementById("xVal").value;
-					if(xVal % .01 !== 0) { // If float
-						if(cScreen.preferredUnit === "cm")
-							document.getElementById("square").style.width = realCm(xVal);
-						else
-							document.getElementById("square").style.width = realInch(xVal);
-					}
+				    return TrueSizes.editObject();
 				}
 
 				// HEIGHT
 				function changeY()
 				{
-					// Hide use intructions
-					document.getElementById("instructions").style.display = "none";
-					// Apply the new size if valid entry
-					var yVal = document.getElementById("yVal").value;
-					if(yVal % .01 !== 0) { // If float
-						if(cScreen.preferredUnit === "cm")
-							document.getElementById("square").style.height = realCm(yVal);
-						else
-							document.getElementById("square").style.height = realInch(yVal);
-					}
+				    return TrueSizes.editObject();
 				}
 
 
@@ -647,23 +324,12 @@
 
 		function goFullScreen()
 		{
-			app.fullscreenStatus = true;
-			// Go fullscreen
-			var body = document.getElementsByTagName("body")[0];
-			body.requestFullscreen();
-			// Fullscreen button evolves into end fullscreen button
-			document.getElementById("fullscreen-button").getElementsByTagName("img")[0].setAttribute("src", "rsrc/img/fullscreen-end-icon.svg");
-			document.getElementById("fullscreen-button").setAttribute("onmousedown", "endFullScreen();");
+		    return TrueSizes.fullscreen();
 		}
 
 		function endFullScreen()
 		{
-			// End fullscreen
-			document.exitFullscreen();
-			// End fullscreen button evolves into fullscreen button
-			document.getElementById("fullscreen-button").getElementsByTagName("img")[0].setAttribute("src", "rsrc/img/fullscreen-icon.svg");
-			document.getElementById("fullscreen-button").setAttribute("onmousedown", "goFullScreen();");
-			app.fullscreenStatus = false;
+		    return TrueSizes.fullscreen();
 		}
 
 	/*  ----------------------------------------
@@ -676,34 +342,12 @@
 
 			function goUserPreferences()
 			{
-				document.getElementById("instructions").style.display = "none";
-				document.getElementById("userPreferences").style.display = "block";
-
-				document.getElementById("square").style.width = "min(100vw - 60px, 70vw, 600px)";
-				document.getElementById("square").style.height = "min(100vh - 60px, 70vh, 600px)";
-
-				document.getElementById("app-settings-button").setAttribute("onmousedown", "endUserPreferences();");
-
-				// lock inputs
-				document.getElementById("yVal").setAttribute("disabled", "true");
-				document.getElementById("xVal").setAttribute("disabled", "true");
-				document.getElementById("sizeUnit").setAttribute("disabled", "true");
+			    return TrueSizes.openPreferences();
 			}
 
 			function endUserPreferences()
 			{
-				document.getElementById("instructions").style.display = "block";
-				document.getElementById("userPreferences").style.display = "none";
-
-				changeCalibrationObject(); // load the last calibration in case no size has been entred by the user
-				reloadSquare(); // load the last entry
-
-				document.getElementById("app-settings-button").setAttribute("onmousedown", "goUserPreferences();");
-
-				// unlock inputs
-				document.getElementById("yVal").removeAttribute("disabled");
-				document.getElementById("xVal").removeAttribute("disabled");
-				document.getElementById("sizeUnit").removeAttribute("disabled");
+			    return TrueSizes.closePreferences();
 			}
 
 
@@ -783,17 +427,9 @@
 
 			function setPreferredUnit()
 			{
-				let sUnit = document.getElementById("preferredUnit").value;
-				if(sUnit === "cm")
-					app.preferredUnit = "cm";
-				else if(sUnit === "inches")
-					app.preferredUnit = "inches";
-				else
-					console.log("ERROR : unknown size unit (not cm, not inches)");
-				document.getElementById("sizeUnit").value = app.preferredUnit;
-				cScreen.preferredUnit = app.preferredUnit;
-				appSaveEdit();
-				updateGraduations();
+			    app.preferredUnit = document.getElementById('preferredUnit').value;
+                document.getElementById('sizeUnit').value = app.preferredUnit;
+                changeSizeUnit(); appSaveEdit();
 			}
 
 
@@ -831,21 +467,7 @@
 
 			function updateScreenDisplay()
 			{
-				// <b>screen 1</b> : <span>model</span> (<span>15.4 inch.</span> - <span>1080</span> x <span>1920</span>)
-				console.log("UPDATE SCREEN LIST DISPLAY");
-				var listHTML = "";//"<p>";
-				var i;
-				for(i=0 ; i<localStorage.length; i++) {
-					var key = localStorage.key(i);
-					var value = JSON.parse(localStorage[key]);
-					if(i>0)
-						listHTML += "<br/>";
-					if(key.includes("screen")) {
-						console.log("PREF LIST : " + key + " => " + value.name);
-						listHTML += "<b>screen " + i + "</b> : " + value.name + " (" + value.diagonal.toFixed(1) + " inch. - " + value.wRes + "x" + value.hRes + ")"; 
-					}
-				}
-				document.getElementById("screen-list").innerHTML = listHTML;
+			    return TrueSizes.updateProfiles();
 			}
 
 /*  =========================================================================
@@ -854,21 +476,7 @@
 
 	function deviceFoundProcedure()
 	{
-		// GET THE DEVICE (saved configuration or detection)
-		deviceRetrieval();
-		console.log((window.screen.width * window.devicePixelRatio) + " - " + cScreen.wRes);
-
-		// INTERFACE GENERATION BASED ON CONFIGURATION
-		changeSizeUnit(); // update the unit depending on the potential browser auto-completion
-		screenSizeButtonsGeneration();
-		calibrationObjectsListGeneration();
-			// First square dimensions : the preferred calibration object
-		changeCalibrationObject();
-
-		// DISPLAY DEVICE DATA
-		document.getElementById("deviceName").textContent = cScreen.name;
-		document.getElementById("deviceScreenSize").textContent = cScreen.diagonal.toFixed(1) + " inch.";
-		document.getElementById("deviceResolution").textContent = Math.round(cScreen.wRes) + " x " + Math.round(cScreen.hRes); 
+	    return TrueSizes.initialize();
 	}
 
 	function drawFrame()
@@ -914,23 +522,15 @@
 
 	function loadTheme(e)
 	{
-		const darkModeOn = e.matches;
-		console.log(`Dark mode is ${darkModeOn ? '🌒 on' : '☀️ off'}.`);
-		if(darkModeOn) {
-			document.getElementsByTagName("body")[0].classList.add("dark");
-		}
-		else {
-			document.getElementsByTagName("body")[0].classList.remove("dark");
-		}
-		// Canvas drawing
-		drawFrame();
+	    if (app.theme !== 'auto') return;
+        document.body.classList.toggle('dark', e.matches); drawFrame();
 	}
 
 	function updateGraduations()
 	{
 		if(app.showGraduations) {
 			// Add graduations button
-			document.getElementById("graduation-button").setAttribute("onmousedown", "removeGraduations();");
+				document.getElementById("graduation-button").setAttribute("onclick", "removeGraduations();");
 			document.getElementById("graduation-button").innerHTML = "hide graduations";
 			// Display graduations depending on the unit
 			if(cScreen.preferredUnit === "cm") {
@@ -948,7 +548,7 @@
 		}
 		else {
 			// Add graduation button
-			document.getElementById("graduation-button").setAttribute("onmousedown", "addGraduations();");
+				document.getElementById("graduation-button").setAttribute("onclick", "addGraduations();");
 			document.getElementById("graduation-button").innerHTML = "display graduations";
 			document.getElementById("graduations").style.width = 0;
 			document.getElementById("graduations-portrait").style.height = 0;
@@ -984,11 +584,7 @@
 			---------------------------------------- */
 
 			if(app.theme === "auto") {
-				// DARK MODE CHANGE LIVE UPDATE https://web.dev/prefers-color-scheme/
-				const darkModeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-				darkModeMediaQuery.addListener((e) => {
-					loadTheme(e);
-				});
+				// Theme listener is installed once by the historical UI adapter.
 
 				setAutoMode();
 			}
@@ -1007,16 +603,7 @@
 
 			deviceFoundProcedure();
 
-			// SCREEN CHANGE LIVE DETECTION
-			setInterval(function() {
-				if(app.fullscreenStatus === false) {
-					// IF SCREEN CHANGE (except rotations)
-					if( ( (window.screen.width * window.devicePixelRatio != cScreen.wRes && window.screen.width * window.devicePixelRatio != cScreen.hRes) || (window.screen.height * window.devicePixelRatio != cScreen.wRes && window.screen.height * window.devicePixelRatio != cScreen.hRes) ) && screen.calibrationStatus != -1) {
-						cScreen = new Screen();
-						deviceFoundProcedure();
-					}
-				}
-			}, 300);
+			// Mapping changes are monitored without erasing machine identity.
 
 
 
@@ -1026,7 +613,4 @@
 			//
 			updateGraduations();
 	});
-
-
-
 

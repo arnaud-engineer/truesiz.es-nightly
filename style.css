@@ -96,7 +96,7 @@
 		margin: auto;
 		text-align: center;
 		overflow: hidden;
-		padding: 5px;
+		padding: 0;
 		/* THEME */
 		background: rgb(131,58,180); /* for old browsers compatibility */
 		background: linear-gradient(45deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%); /* https://cssgradient.io/ */
@@ -303,7 +303,7 @@
 
 				font-size: 24px;
 				font-weight: normal;
-				letter-spacing: -1.25px;
+				letter-spacing: 0;
 				text-transform: lowercase;
 				color: black;
 			}
@@ -721,6 +721,89 @@
 	.dark #calibrationBox #calibrationStatus { color: white; }
 	.dark #calibrationBox #calibrationButtons button { color: gainsboro; }
 
-
-
-
+/* Nightly integration: keep the original composition and a non-shrinking metric frame. */
+* { letter-spacing: 0 !important; }
+main { padding: 150px 40px 220px; overflow: hidden; }
+#square { flex: 0 0 auto; margin: auto auto 0; }
+#instructions { margin: 18px auto auto; max-width: 440px; width: 100%; text-align: center; font-size: 14px; color: #686868; }
+.dark #instructions { color: #ccc; }
+#title h1, #title h1 a { width: auto; max-width: 100%; }
+#fullscreen-button, #app-settings-button { background: none; border: 0; width: 34px; height: 36px; padding: 0; }
+button, select, input { font: inherit; }
+button, select { cursor: pointer; }
+button:focus-visible, a:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid #df3841; outline-offset: 3px; }
+#device-info { max-width: min(440px, calc(100vw - 160px)); }
+#device-info > div { overflow-wrap: anywhere; }
+#calibrationBox #calibrationStatus { font-size: 20px; min-width: 0; width: 320px; height: auto; padding-top: 10px; }
+#calibrationBox #calibrationButtons { width: 320px; height: auto; display: flex; flex-wrap: wrap; gap: 4px; }
+#calibrationBox #calibrationButtons button { min-height: 30px; font-size: 14px; }
+#calibration-zoom { transform: none; gap: 4px; }
+#calibration-zoom button { width: 48px; height: 48px; font-size: 28px; }
+#calibrationTools { position: fixed; left: 50%; bottom: 36px; transform: translateX(-50%); width: min(520px, calc(100vw - 210px)); max-height: 170px; overflow: auto; text-align: center; font-size: 14px; }
+#calibrationTools h1 { font-size: 18px; font-weight: normal; margin: 0 0 8px; }
+#calibrationTools p { margin: 8px 0; }
+#calibrationTools select { max-width: 100%; font-size: 16px; }
+#calibrationTools details { margin-top: 12px; }
+#calibrationTools summary { cursor: pointer; }
+#screenSizeButtons { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+#screenSizeButtons button, #screenSizeButtons input { font-size: 14px; min-width: 46px; min-height: 32px; width: 52px; }
+.aligning #device-info > div:not(#calibrationBox) { display: none; }
+.aligning #device-info { max-width: 330px; }
+.aligning #square { margin: auto; }
+.aligning #calibrationTools { bottom: 130px; }
+.preferences-open #square { margin: auto; }
+.preferences-open #square > object { visibility: hidden; }
+#userPreferences { width: 100%; overflow: auto; padding: 20px; }
+#userPreferences > div { width: 100%; display: block; }
+#userPreferences h1 { margin: 12px 0 8px; }
+#userPreferences p { max-width: 100%; font-size: 14px; }
+#userPreferences button { padding: 5px 8px; font-size: 14px; }
+#userPreferences button.themeButton { display: inline-block; width: auto; max-width: 80px !important; border: none; background: transparent; color: inherit; opacity: .6; margin: 8px !important; }
+#userPreferences button.themeButton.selected { opacity: 1; }
+#userPreferences button.themeButton img { width: 32px; height: 32px; margin-bottom: 6px !important; }
+#userPreferences button.themeButton span { display: block; font-size: 12px; }
+#model-result { margin-top: 6px; font-size: 13px; overflow-wrap: anywhere; }
+.dark #calibrationTools { color: #ddd; }
+@media (max-width: 768px) {
+    main { padding: 115px 30px 220px; }
+    #title { margin: 34px 32px; }
+    #credits { visibility: hidden; pointer-events: none; }
+    #input-form { margin: 26px 28px; transform: none; }
+    #device-info { margin: 28px; transform: none; max-width: calc(100vw - 170px); }
+    #device-info > div { font-size: 12px; }
+    #device-info #calibrationBox { width: 100%; height: auto; margin-top: 8px; }
+    #calibrationBox #calibrationIcon { display: none; }
+    #calibrationBox #calibrationStatus, #calibrationBox #calibrationButtons { position: static; width: 100%; height: auto; min-width: 0; padding: 4px 0; transform: none; }
+    #calibrationBox #calibrationStatus { font-size: 16px; }
+    #calibrationBox #calibrationButtons button { font-size: 13px; text-align: left; }
+    #calibrationTools { width: calc(100vw - 80px); max-height: 160px; }
+    .aligning #calibrationTools { bottom: 112px; max-height: 90px; }
+    .aligning #calibrationTools h1 { display: none; }
+    .aligning #calibrationTools p { margin: 5px 0; font-size: 12px; }
+    .aligning #calibrationTools details { margin-top: 6px; }
+    .aligning main { padding-top: 105px; padding-bottom: 212px; }
+    #calibration-zoom { right: 28px; bottom: 28px; }
+    #instructions { font-size: 13px; }
+    #userPreferences { padding: 12px; }
+    #userPreferences h1 { font-size: 16px; }
+    #userPreferences a.themeButton { margin: 6px !important; }
+}
+@media (max-height: 500px) and (min-width: 769px) {
+    main { padding-top: 100px; padding-bottom: 160px; }
+    #title { margin: 24px 32px; }
+    #title h1, #title h1 a { font-size: 38px; }
+    #device-info, #input-form { margin: 24px 32px; }
+    .aligning #calibrationTools { bottom: 90px; max-height: 100px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media (max-height: 500px) and (max-width: 768px) and (orientation: landscape) {
+    main { padding: 85px 120px 65px 250px; }
+    #title { margin: 24px; }
+    #title h1, #title h1 a { font-size: 36px; }
+    #device-info { margin: 24px; max-width: 210px; }
+    #input-form { margin: 24px; }
+    .aligning main { padding: 85px 120px 130px 250px; }
+    .aligning #calibrationTools { left: auto; right: 120px; bottom: 18px; transform: none; width: 280px; max-height: 90px; }
+    #calibration-zoom { right: 24px; bottom: 24px; }
+}
+.frame-error { position: fixed; top: 40%; left: 10%; width: 80% !important; max-width: none !important; }
